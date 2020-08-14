@@ -15,7 +15,11 @@ run the app:<br /> `$ npm start` <br />
 ### DEPLOY
 
 make sure, the geourjs project is active:<br />
-`gcloud config configurations list`<br />
+
+```
+gcloud config configurations list
+```
+
 build your container image using Cloud Build by running the following command from the directory containing the Dockerfile<br />
 
 ```
@@ -37,16 +41,12 @@ docker run -d -p 8080:8080 gcr.io/geourjs/wiski-html
 Deploying your containerized app to Cloud Run is done using the following command:
 
 ```
-gcloud run deploy wiski-html \
-  --image gcr.io/$GOOGLE_CLOUD_PROJECT/wiski-html \
-  --platform managed \
-  --region europe-west1 \
-  --allow-unauthenticated
+gcloud run deploy wiski-html   --image gcr.io/geourjs/wiski-html   --platform managed   --region europe-west1   --allow-unauthenticated
 ```
 
 ### CALL
 
-[https://wiski-html-h2eptfuxza-uc.a.run.app/](https://wiski-html-h2eptfuxza-uc.a.run.app/)
+[https://wiski-html-h2eptfuxza-ew.a.run.app/](https://wiski-html-h2eptfuxza-ew.a.run.app/)
 
 ### GET A COPY OF THIS REPOSITORY
 

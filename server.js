@@ -1,10 +1,12 @@
 // load the things we need
 var express = require("express");
 var compression = require("compression");
+var helmet = require("helmet");
 var app = express();
 // set the view engine to ejs
 app.set("view engine", "ejs");
 app.use(compression());
+app.use(helmet());
 app.use(express.static("public"));
 // index page
 app.get("/", function (req, res) {

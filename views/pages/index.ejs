@@ -5,30 +5,22 @@
   <head>
     <%- include('../partials/head'); %>
   </head>
-  <body class="container">
-    <header>
-      <%- include('../partials/header'); %>
-    </header>
-
-    <main>
-      <div class="jumbotron">
-        <h1>This is great</h1>
-        <p class="blue">Welcome to templating using EJS</p>
-        <p class="red">Test in Red</p>
+  <body>
+    <div class="jumbotron jumbotron-fluid">
+      <div class="container">
+        <h1 class="display-4">WISKI HTML Service.</h1>
+        <p class="lead">
+          This service provides station information as HTML.
+        </p>
       </div>
-      <h2>Variable</h2>
-      <p><%= tagline %></p>
-      <h2>Loop</h2>
-
+    </div>
+    <div class="container">
+      <h2>Endpoints</h2>
       <ul>
-        <% drinks.forEach(function(drink) { %>
-        <li><%= drink.name %> - <%= drink.drunkness %></li>
+        <% endpoints.forEach(function(endpoint) { %>
+        <li><a href="<%= endpoint %>"><%= endpoint %></a></li>
         <% }); %>
       </ul>
-    </main>
-
-    <footer>
-      <%- include('../partials/footer'); %>
-    </footer>
+    </div>
   </body>
 </html>

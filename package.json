@@ -1,0 +1,18 @@
+{
+  "name": "node-ejs",
+  "license": "MIT",
+  "version": "0.0.1",
+  "description": "serving wiski station data as html",
+  "author": "karten-werk GmbH, Hanskaspar Frei",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "ejs": "^3.1.3",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "prettier": "^2.0.5"
+  }
+}

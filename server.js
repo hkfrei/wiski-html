@@ -12,7 +12,7 @@ app.get("/", function (req, res) {
   // max-age:     how long can content be stored in users browsers.
   // s-maxage:    how long can content be stored on a cdn.
   res.set("Cache-Control", "public, max-age=300, s-maxage=600s");
-  var endpoints = ["/wasser?id=123", "/boden?id=123"];
+  var endpoints = ["/wasser?stationid=123", "/boden?stationid=123"];
   res.render("pages/index", {
     endpoints: endpoints,
   });

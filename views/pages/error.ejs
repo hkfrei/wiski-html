@@ -1,0 +1,31 @@
+<!-- views/pages/error.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('../partials/head'); %>
+  </head>
+  <body class="container">
+    <div style="padding-top: 24px;">
+      <h4 style="color: red;">
+        😳 Upps... <br />
+        Sorry, but an error occurred. <br />
+        We can't display information for this station.
+      </h4>
+    </div>
+    <div style="padding-top: 24px;">
+      <strong>Please call:</strong><br />
+      <adress
+        >Karten-Werk GmbH<br />
+        Hanskaspar Frei<br />
+        Hofstrasse 87 <br />
+        8620 Wetzikon <br />
+        <a href="mailto:hkfrei@karten-werk.ch">hkfrei@karten-werk.ch</a><br />
+        +41 79 360 72 83
+      </adress>
+    </div>
+    <div style="padding-top: 24px;">
+      <strong>Error stack:</strong><br /><%= error %>
+    </div>
+  </body>
+</html>

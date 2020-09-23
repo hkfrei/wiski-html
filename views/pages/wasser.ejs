@@ -6,9 +6,172 @@
     <%- include('../partials/head'); %>
   </head>
   <body class="container">
-    <div>
-      <h2>Wasser...</h2>
-      id: <%= station %>
+    <div class="accordion" id="accordionExample">
+      <div class="card">
+        <div class="card-header" id="headingOne">
+          <h2 class="mb-0">
+            <button
+              class="btn btn-link btn-block text-left"
+              type="button"
+              data-toggle="collapse"
+              data-target="#station-info"
+              aria-expanded="true"
+              aria-controls="station-info"
+            >
+              Station Info
+            </button>
+          </h2>
+        </div>
+
+        <div
+          id="station-info"
+          class="collapse show"
+          aria-labelledby="headingOne"
+          data-parent="#accordionExample"
+        >
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-striped">
+                <tbody>
+                  <tr>
+                    <th scope="row">Name</th>
+                    <td><%= station.station_name %></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Fachgebiet</th>
+                    <td><%= station.object_type %></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Messparameter</th>
+                    <td>
+                      <%= measure_params.join(" | ") %>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Datenherr</th>
+                    <td><%= station.DATAOWNER %></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Stationshöhe</th>
+                    <td><%= station.station_elevation %> M.ü.M.</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Gewässer</th>
+                    <td><%= station.WTO_OBJECT %></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Standort</th>
+                    <td><%= station.site_name %></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Stationseinzugsgebiet</th>
+                    <td><%= station.CATCHMENT_SIZE.substring(8) %></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Koordinaten (LV95)</th>
+                    <td>
+                      <%=
+                      parseInt(station.station_local_x).toLocaleString("de-CH")
+                      %> / <%=
+                      parseInt(station.station_local_y).toLocaleString("de-CH")
+                      %>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Messbeginn</th>
+                    <%const messbeginn = new
+                    Date(station.station_diary_status.substring(0,10)).toLocaleDateString("de-CH")
+                    %>
+                    <td><%= messbeginn %> | <%= station.station_status %></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Stationswebseite</th>
+                    <td>
+                      <a
+                        href="<%= station.station_website_host %><%=station.stationNumber%>.html"
+                        target="blank"
+                        rel="noreferrer noopener"
+                        >Link</a
+                      >
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header" id="headingTwo">
+          <h2 class="mb-0">
+            <button
+              class="btn btn-link btn-block text-left collapsed"
+              type="button"
+              data-toggle="collapse"
+              data-target="#messdaten-aktuell"
+              aria-expanded="false"
+              aria-controls="messdaten-aktuell"
+            >
+              Aktuelle Messdaten
+            </button>
+          </h2>
+        </div>
+        <div
+          id="messdaten-aktuell"
+          class="collapse"
+          aria-labelledby="headingTwo"
+          data-parent="#accordionExample"
+        >
+          <div class="card-body">
+            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus
+            terry richardson ad squid. 3 wolf moon officia aute, non cupidatat
+            skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.
+            Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid
+            single-origin coffee nulla assumenda shoreditch et. Nihil anim
+            keffiyeh helvetica, craft beer labore wes anderson cred nesciunt
+            sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings
+            occaecat craft beer farm-to-table, raw denim aesthetic synth
+            nesciunt you probably haven't heard of them accusamus labore
+            sustainable VHS.
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header" id="headingThree">
+          <h2 class="mb-0">
+            <button
+              class="btn btn-link btn-block text-left collapsed"
+              type="button"
+              data-toggle="collapse"
+              data-target="#diagramme"
+              aria-expanded="false"
+              aria-controls="diagramme"
+            >
+              Diagramme
+            </button>
+          </h2>
+        </div>
+        <div
+          id="diagramme"
+          class="collapse"
+          aria-labelledby="headingThree"
+          data-parent="#accordionExample"
+        >
+          <div class="card-body">
+            <% time_series.forEach(serie =>{ %>
+            <div>
+              <img
+                src="<%= station.kiwis_host %><%= station.graph_url %>&ts_id=<%=
+              serie.ts_id %>&width=500&height=250&period=PT24H"
+                class="img-fluid"
+              />
+            </div>
+            <hr />
+            <% }) %>
+          </div>
+        </div>
+      </div>
     </div>
+    <%- include('../partials/footer'); %>
   </body>
 </html>

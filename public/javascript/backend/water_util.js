@@ -1,0 +1,43 @@
+var fetch = require("node-fetch");
+var env = require("./ENV.js");
+const waterUtil = {
+  getWaterStationInfo: async (stationid) => {
+    // basic station information
+    const stationInfoResponse = await fetch(
+      `${env.kiwis_host}${env.station_info}&station_id=${stationid}`
+    );
+    const station_info = await stationInfoResponse.json();
+    // filter out "Allgemein stations"
+    const filtered_stations = station_info.filter(
+      (station) => station.object_type !== "Allgemein"
+    );
+    let stationNumber = "";
+    const firstStation = filtered_stations[0];
+    // get the numeric part of the station number to be able to create the link to the station website
+    for (var i = 0; i < firstStation.station_no.length; i++) {
+      if (Number.isInteger(parseInt(firstStation.station_no[i]))) {
+        stationNumber += firstStation.station_no[i];
+      }
+    }
+    // get possible diagrams/timeseries this station
+    const timeSeriesResponse = await fetch(
+      `${env.kiwis_host}${env.time_series_list}&station_id=${stationid}`
+    );
+    const time_series = await timeSeriesResponse.json();
+
+    // extract the measure parameters for this station
+    const measure_params = time_series.map((serie) => serie.parametertype_name);
+    return {
+      info: {
+        ...filtered_stations[0],
+        stationNumber,
+        station_website_host: env.hydrodaten_station_host,
+        kiwis_host: env.kiwis_host,
+        graph_url: env.graph,
+      },
+      measure_params,
+      time_series,
+    };
+  },
+};
+module.exports = waterUtil;

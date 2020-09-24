@@ -30,7 +30,7 @@ app.get("/", function (req, res) {
   // max-age:     how long can content be stored in users browsers.
   // s-maxage:    how long can content be stored on a cdn.
   res.set("Cache-Control", "public, max-age=300, s-maxage=600s");
-  var endpoints = ["/wasser?stationid=22061", "/boden?stationid=22005"];
+  var endpoints = ["/wasser?stationid=21872", "/boden?stationid=22005"];
   res.render("pages/index", {
     endpoints: endpoints,
   });
@@ -45,7 +45,9 @@ app.get("/wasser", async (req, res, next) => {
       station: station.info,
       time_series: station.time_series,
       measure_params: station.measure_params,
+      unit_names: station.unit_names,
     });
+    console.log(station);
   } catch (error) {
     return next(error);
   }

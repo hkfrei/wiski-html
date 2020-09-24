@@ -11,14 +11,18 @@
         <div class="card-header" id="headingOne">
           <h2 class="mb-0">
             <button
-              class="btn btn-link btn-block text-left"
+              class="btn btn-link btn-block text-left text-decoration-none"
               type="button"
               data-toggle="collapse"
               data-target="#station-info"
               aria-expanded="true"
               aria-controls="station-info"
             >
-              Station Info
+              <img
+                src="images/info.svg"
+                class="accordion-image"
+                alt="info"
+              />&nbsp; Station Info
             </button>
           </h2>
         </div>
@@ -105,14 +109,18 @@
         <div class="card-header" id="headingTwo">
           <h2 class="mb-0">
             <button
-              class="btn btn-link btn-block text-left collapsed"
+              class="btn btn-link btn-block text-left collapsed text-decoration-none"
               type="button"
               data-toggle="collapse"
               data-target="#messdaten-aktuell"
               aria-expanded="false"
               aria-controls="messdaten-aktuell"
             >
-              Aktuelle Messdaten
+              <img
+                src="images/rss.svg"
+                class="accordion-image"
+                alt="rss"
+              />&nbsp; Aktuelle Messdaten
             </button>
           </h2>
         </div>
@@ -123,16 +131,9 @@
           data-parent="#accordionExample"
         >
           <div class="card-body">
-            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus
-            terry richardson ad squid. 3 wolf moon officia aute, non cupidatat
-            skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.
-            Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid
-            single-origin coffee nulla assumenda shoreditch et. Nihil anim
-            keffiyeh helvetica, craft beer labore wes anderson cred nesciunt
-            sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings
-            occaecat craft beer farm-to-table, raw denim aesthetic synth
-            nesciunt you probably haven't heard of them accusamus labore
-            sustainable VHS.
+            <%-
+            include('../partials/latest_measurement',{measurements:station.latest_measurements,
+            unit_names}) %>
           </div>
         </div>
       </div>
@@ -140,13 +141,18 @@
         <div class="card-header" id="headingThree">
           <h2 class="mb-0">
             <button
-              class="btn btn-link btn-block text-left collapsed"
+              class="btn btn-link btn-block text-left collapsed text-decoration-none"
               type="button"
               data-toggle="collapse"
               data-target="#diagramme"
               aria-expanded="false"
               aria-controls="diagramme"
             >
+              <img
+                src="images/bar-chart.svg"
+                class="accordion-image"
+                alt="bar-chart"
+              />
               Diagramme
             </button>
           </h2>

@@ -1,0 +1,27 @@
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Parameter</th>
+      <th>Messwert</th>
+      <th>Gemessen am</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% measurements.forEach(measurement => { %>
+    <tr>
+      <td><%= measurement.parametertype_name %></td>
+      <td>
+        <%= measurement.data[0][1] %> <%
+        if(unit_names[measurement.ts_unitname]){ %> <%=
+        unit_names[measurement.ts_unitname] %> <%} else { %> <%=
+        measurement.ts_unitname %> <% } %>
+      </td>
+      <td>
+        <% const date = new Date(measurement.data[0][0]) %> <%=
+        date.toLocaleDateString("de-ch") %> | <%=
+        date.toLocaleTimeString("de-ch") %>
+      </td>
+    </tr>
+    <% }) %>
+  </tbody>
+</table>

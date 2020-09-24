@@ -1,4 +1,6 @@
-import { clicked } from "./modules/util_module.mjs";
+import { changeGraphDate } from "./modules/util_module.mjs";
 
-const button = document.getElementById("clickme");
-button.addEventListener("click", clicked);
+const selects = document.querySelectorAll('*[id^="select-"]');
+selects.forEach((select) => {
+  select.addEventListener("change", (e) => changeGraphDate(e));
+});

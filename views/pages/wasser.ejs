@@ -164,20 +164,13 @@
           data-parent="#accordionExample"
         >
           <div class="card-body">
-            <% time_series.forEach(serie =>{ %>
-            <div>
-              <img
-                src="<%= station.kiwis_host %><%= station.graph_url %>&ts_id=<%=
-              serie.ts_id %>&width=500&height=250&period=PT24H"
-                class="img-fluid"
-              />
-            </div>
-            <hr />
-            <% }) %>
+            <% time_series.forEach(graph =>{ %> <%-
+            include('../partials/graph',{graph,station}); %> <% }) %>
           </div>
         </div>
       </div>
     </div>
     <%- include('../partials/footer'); %>
+    <script type="module" src="javascript/frontend/main.js"></script>
   </body>
 </html>

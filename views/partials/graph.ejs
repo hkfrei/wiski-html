@@ -1,0 +1,23 @@
+<div>
+  <div class="input-group input-group-sm">
+    <div class="input-group-prepend">
+      <label class="input-group-text" for="select-<%= graph.ts_id %>"
+        >Zeitraum</label
+      >
+    </div>
+    <select id="select-<%= graph.ts_id %>">
+      <option value="PT24H" selected>24 Stunden</option>
+      <option value="PT48H">48 Stunden</option>
+      <option value="P7D">1 Woche</option>
+      <option value="P1M">1 Monat</option>
+      <option value="P1Y">1 Jahr</option>
+    </select>
+  </div>
+  <img
+    id="graph-<%= graph.ts_id %>"
+    src="<%= station.kiwis_host %><%= station.graph_url %>&ts_id=<%=
+    graph.ts_id %>&width=500&height=250&period=PT24H"
+    class="img-fluid graph-image"
+  />
+</div>
+<hr />

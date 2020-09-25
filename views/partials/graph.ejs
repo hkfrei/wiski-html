@@ -1,17 +1,67 @@
 <div>
-  <div class="input-group input-group-sm">
-    <div class="input-group-prepend">
-      <label class="input-group-text" for="select-<%= graph.ts_id %>"
-        >Zeitraum</label
+  <div class="time-radios">
+    <div class="time-radios--title">Messzeitraum</div>
+    <div class="form-check form-check-inline">
+      <input
+        class="form-check-input graph-time-radio"
+        type="radio"
+        name="time-options-<%= graph.ts_id %>"
+        id="radio-pt24h-<%= graph.ts_id %>"
+        value="PT24H"
+        checked
+      />
+      <label class="form-check-label" for="radio-pt24h-<%= graph.ts_id %>"
+        >24 Std.</label
       >
     </div>
-    <select id="select-<%= graph.ts_id %>">
-      <option value="PT24H" selected>24 Stunden</option>
-      <option value="PT48H">48 Stunden</option>
-      <option value="P7D">1 Woche</option>
-      <option value="P1M">1 Monat</option>
-      <option value="P1Y">1 Jahr</option>
-    </select>
+    <div class="form-check form-check-inline">
+      <input
+        class="form-check-input graph-time-radio"
+        type="radio"
+        name="time-options-<%= graph.ts_id %>"
+        id="radio-pt48h-<%= graph.ts_id %>"
+        value="PT48H"
+      />
+      <label class="form-check-label" for="radio-pt48h-<%= graph.ts_id %>"
+        >48 Std.</label
+      >
+    </div>
+    <div class="form-check form-check-inline">
+      <input
+        class="form-check-input graph-time-radio"
+        type="radio"
+        name="time-options-<%= graph.ts_id %>"
+        id="radio-p7d-<%= graph.ts_id %>"
+        value="P7D"
+      />
+      <label class="form-check-label" for="radio-p7d-<%= graph.ts_id %>"
+        >1 Woche</label
+      >
+    </div>
+    <div class="form-check form-check-inline">
+      <input
+        class="form-check-input graph-time-radio"
+        type="radio"
+        name="time-options-<%= graph.ts_id %>"
+        id="radio-p1m-<%= graph.ts_id %>"
+        value="P1M"
+      />
+      <label class="form-check-label" for="radio-p1m-<%= graph.ts_id %>"
+        >1 Monat</label
+      >
+    </div>
+    <div class="form-check form-check-inline">
+      <input
+        class="form-check-input graph-time-radio"
+        type="radio"
+        name="time-options-<%= graph.ts_id %>"
+        id="radio-p1y-<%= graph.ts_id %>"
+        value="P1Y"
+      />
+      <label class="form-check-label" for="radio-p1y-<%= graph.ts_id %>"
+        >1 Jahr</label
+      >
+    </div>
   </div>
   <img
     id="graph-<%= graph.ts_id %>"

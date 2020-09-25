@@ -6,3 +6,8 @@
 .graph-image {
   padding: 24px 0 0 0;
 }
+
+.time-radios--title {
+  padding: 0 0 12px 0;
+  font-weight: bold;
+}

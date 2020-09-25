@@ -1,5 +1,5 @@
 const changeGraphDate = (event) => {
-  const ts_id = event.target.id.split("-")[1];
+  const ts_id = event.target.id.split("-")[2];
   const graph = document.getElementById(`graph-${ts_id}`);
   const splitted_src = graph.src.split("&");
   // remove the last element wich is the period

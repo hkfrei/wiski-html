@@ -23,6 +23,7 @@ app.use(
   })
 );
 app.use(express.static("public"));
+const endpoints = ["/wasser?stationid=21872", "/boden?stationid=22005"];
 // index page
 app.get("/", function (req, res) {
   // caching strategy:
@@ -30,15 +31,19 @@ app.get("/", function (req, res) {
   // max-age:     how long can content be stored in users browsers.
   // s-maxage:    how long can content be stored on a cdn.
   res.set("Cache-Control", "public, max-age=300, s-maxage=600s");
-  var endpoints = ["/wasser?stationid=21872", "/boden?stationid=22005"];
   res.render("pages/index", {
-    endpoints: endpoints,
+    endpoints,
   });
 });
 
 // wasser page
 app.get("/wasser", async (req, res, next) => {
   const { stationid } = req.query;
+  if (!stationid) {
+    res.render("pages/index", {
+      endpoints,
+    });
+  }
   try {
     const station = await waterUtil.getWaterStationInfo(stationid);
     res.render("pages/wasser", {

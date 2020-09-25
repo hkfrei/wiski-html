@@ -38,8 +38,25 @@
               <table class="table table-striped">
                 <tbody>
                   <tr>
+                    <th scope="row">Status</th>
+                    <td>
+                      <% if(station.ONLINE_PUBLICATION){ %><span
+                        class="badge badge-pill badge-success"
+                      >
+                        Online</span
+                      >
+                      <% } else { %>
+                      <span class="badge badge-pill badge-danger">
+                        Offline</span
+                      >
+                      <% } %>
+                    </td>
+                  </tr>
+                  <tr>
                     <th scope="row">Name</th>
-                    <td><%= station.station_name %></td>
+                    <td>
+                      <%= station.station_name %>
+                    </td>
                   </tr>
                   <tr>
                     <th scope="row">Fachgebiet</th>

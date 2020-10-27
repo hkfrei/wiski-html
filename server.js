@@ -1,11 +1,17 @@
 // load the things we need
 var express = require("express");
+var cors = require("cors");
 var compression = require("compression");
 var helmet = require("helmet");
 var app = express();
 var waterUtil = require("./public/javascript/backend/water_util.js");
 app.set("view engine", "ejs");
 app.use(compression());
+const corsOptions = {
+  origin: ["http://app.lisag.ch:3000", "https://geo.ur.ch", /karten-werk\.ch$/],
+  optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+};
+app.use(cors(corsOptions));
 // secure the app but allow scripts required for bootstrap
 app.use(
   helmet.contentSecurityPolicy({

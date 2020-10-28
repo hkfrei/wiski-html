@@ -181,8 +181,10 @@
           data-parent="#accordionExample"
         >
           <div class="card-body">
-            <% time_series.forEach(graph =>{ %> <%-
-            include('../partials/graph',{graph,station}); %> <% }) %>
+            <%if(time_series.length === 0){%>
+            <h6>Es sind keine Diagramme verfügbar.&nbsp;🤔</h6>
+            <%} if(time_series.length > 0){time_series.forEach(graph => { %>
+            <%-include('../partials/graph',{graph,station}); %> <% }) }%>
           </div>
         </div>
       </div>

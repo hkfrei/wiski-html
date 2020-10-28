@@ -4,6 +4,10 @@
   "version": "0.0.1",
   "description": "serving wiski station data as html",
   "author": "karten-werk GmbH, Hanskaspar Frei",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hkfrei/wiski-html"
+  },
   "main": "server.js",
   "scripts": {
     "start": "node server.js"

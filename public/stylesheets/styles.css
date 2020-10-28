@@ -1,6 +1,10 @@
+* {
+  font-size: 0.9rem;
+}
+
 .accordion-image {
-  width: 25px;
-  height: 25px;
+  width: 18px;
+  height: 18px;
 }
 
 .graph-image {
@@ -10,4 +14,8 @@
 .time-radios--title {
   padding: 0 0 12px 0;
   font-weight: bold;
+}
+
+.info-container {
+  padding: 4px;
 }

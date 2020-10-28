@@ -188,6 +188,68 @@
           </div>
         </div>
       </div>
+      <div class="card">
+        <div class="card-header" id="headingFour">
+          <h2 class="mb-0">
+            <button
+              class="btn btn-link btn-block text-left collapsed text-decoration-none"
+              type="button"
+              data-toggle="collapse"
+              data-target="#dokumente"
+              aria-expanded="false"
+              aria-controls="dokumente"
+            >
+              <img
+                src="images/documents.svg"
+                class="accordion-image"
+                alt="bar-chart"
+              />
+              Dokumente
+            </button>
+          </h2>
+        </div>
+        <div
+          id="dokumente"
+          class="collapse"
+          aria-labelledby="headingFour"
+          data-parent="#accordionExample"
+        >
+          <div class="card-body">
+            <h6>Es sind keine Dokumente verfügbar.&nbsp;🤔</h6>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header" id="headingFive">
+          <h2 class="mb-0">
+            <button
+              class="btn btn-link btn-block text-left collapsed text-decoration-none"
+              type="button"
+              data-toggle="collapse"
+              data-target="#bilder"
+              aria-expanded="false"
+              aria-controls="bilder"
+            >
+              <img
+                src="images/images.svg"
+                class="accordion-image"
+                alt="bar-chart"
+              />
+              Bilder
+            </button>
+          </h2>
+        </div>
+        <div
+          id="bilder"
+          class="collapse"
+          aria-labelledby="headingFive"
+          data-parent="#accordionExample"
+        >
+          <div class="card-body">
+            <h6>Es sind keine Bilder verfügbar.&nbsp;🤔</h6>
+          </div>
+        </div>
+      </div>
     </div>
     <%- include('../partials/footer'); %>
     <script type="module" src="javascript/frontend/main.js"></script>

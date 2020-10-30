@@ -29,7 +29,7 @@ for (const node of graphContainers) {
             {
               backgroundColor: "rgba(0,191,255,0.1)", //color of the fill
               borderColor: "deepskyblue", // color of the line
-              label: data.stationparameter_name,
+              label: station.stationparameter_name,
               data,
             },
           ],
@@ -43,6 +43,7 @@ for (const node of graphContainers) {
           scales: {
             xAxes: [
               {
+                ticks: { maxTicksLimit: 4 },
                 type: "time",
                 time: {
                   displayFormats: { day: "D MMM", hour: "D MMM ha" },

@@ -17,13 +17,19 @@ app.use(
   helmet.contentSecurityPolicy({
     directives: {
       defaultSrc: ["'self'"],
+      connectSrc: ["https://kiwis.innetag.ch"],
       scriptSrc: [
         "'self'",
         "https://stackpath.bootstrapcdn.com",
         "https://cdn.jsdelivr.net",
+        "https://cdnjs.cloudflare.com",
         "https://code.jquery.com",
       ],
-      styleSrc: ["'self'", "https://stackpath.bootstrapcdn.com"],
+      styleSrc: [
+        "'self'",
+        "https://stackpath.bootstrapcdn.com",
+        "'unsafe-inline'",
+      ],
       imgSrc: ["'self'", "https://kiwis.innetag.ch"],
     },
   })

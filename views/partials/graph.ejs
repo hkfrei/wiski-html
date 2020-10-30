@@ -69,5 +69,13 @@
     graph.ts_id %>&width=500&height=250&period=PT24H"
     class="img-fluid graph-image"
   />
+  <canvas
+    id="graph-container-<%= graph.ts_id %>"
+    data-tsid="<%= graph.ts_id %>"
+    data-diagramdataurl="<%= station.kiwis_host %><%=station.diagram_data %>"
+    class="graph-container"
+    width="500"
+    height="300"
+  ></canvas>
 </div>
 <hr />

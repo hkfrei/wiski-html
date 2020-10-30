@@ -27,15 +27,12 @@ const waterUtil = {
 
     // get latest measurements for each time series
     const latest_measurements = [];
-    for (const key in time_series) {
-      if (time_series.hasOwnProperty(key)) {
-        const element = time_series[key];
-        const latest_measurement_response = await fetch(
-          `${env.kiwis_host}${env.latest_measurement}&ts_id=${element.ts_id}`
-        );
-        const latest_measurement = await latest_measurement_response.json();
-        latest_measurements.push(latest_measurement[0]);
-      }
+    for (const serie of time_series) {
+      const latest_measurement_response = await fetch(
+        `${env.kiwis_host}${env.latest_measurement}&ts_id=${serie.ts_id}`
+      );
+      const latest_measurement = await latest_measurement_response.json();
+      latest_measurements.push(latest_measurement[0]);
     }
 
     // extract the measure parameters (names) for this station
@@ -47,6 +44,7 @@ const waterUtil = {
         station_website_host: env.hydrodaten_station_host,
         kiwis_host: env.kiwis_host,
         graph_url: env.graph,
+        diagram_data: env.diagram_data,
         latest_measurements,
       },
       measure_params,

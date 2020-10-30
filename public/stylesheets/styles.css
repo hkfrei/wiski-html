@@ -1,7 +1,3 @@
-* {
-  font-size: 0.9rem;
-}
-
 .accordion-image {
   width: 18px;
   height: 18px;
@@ -17,5 +13,10 @@
 }
 
 .info-container {
+  font-size: 0.9rem;
   padding: 4px;
+}
+
+.graph-container {
+  border: 1px solid yellowgreen;
 }

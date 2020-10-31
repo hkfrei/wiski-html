@@ -1,6 +1,4 @@
 var Chart = window.Chart;
-//Chart = typeof Chart === "function" ? Chart : window.Chart;
-console.log("chart", Chart);
 var helpers = Chart.helpers;
 
 var defaultOptions = {

@@ -8,6 +8,7 @@ const graphContainers = document.querySelectorAll(".graph-container");
 for (const node of graphContainers) {
   const ts_id = node.dataset.tsid;
   const url = node.dataset.diagramdataurl;
+  const unit_names = JSON.parse(node.dataset.unitnames);
   // json data for diagrams
   fetch(`${url}&ts_id=${ts_id}`)
     .then((response) => response.json())
@@ -55,6 +56,12 @@ for (const node of graphContainers) {
               {
                 ticks: {
                   beginAtZero: false,
+                },
+                scaleLabel: {
+                  display: true,
+                  labelString: `${station.stationparameter_name} [${
+                    unit_names[station.ts_unitsymbol]
+                  }]`,
                 },
               },
             ],

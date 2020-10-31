@@ -14,7 +14,7 @@ module.exports = {
     "/KiWIS/KiWIS?service=kisters&type=queryServices&request=getgraph&datasource=1&template=sg_example&format=jpg",
   hydrodaten_station_host: "https://www.hydrodaten.admin.ch/de/",
   unit_names: {
-    meter: "M.ü.M",
-    "cubic meter per second": "m3/s",
+    m: "m.ü.Meer",
+    cumec: "m3/s",
   },
 };

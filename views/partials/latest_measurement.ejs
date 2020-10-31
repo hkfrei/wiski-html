@@ -15,9 +15,9 @@
       <td><%= measurement.parametertype_name %></td>
       <td>
         <%= measurement.data[0][1] %> <%
-        if(unit_names[measurement.ts_unitname]){ %> <%=
-        unit_names[measurement.ts_unitname] %> <%} else { %> <%=
-        measurement.ts_unitname %> <% } %>
+        if(unit_names[measurement.ts_unitsymbol]){ %> <%=
+        unit_names[measurement.ts_unitsymbol] %> <%} else { %> <%=
+        measurement.ts_unitsymbol %> <% } %>
       </td>
       <td>
         <% const date = new Date(measurement.data[0][0]) %> <%=

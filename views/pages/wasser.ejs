@@ -74,7 +74,7 @@
                   </tr>
                   <tr>
                     <th scope="row">Stationshöhe</th>
-                    <td><%= station.station_elevation %> M.ü.M.</td>
+                    <td><%= station.station_elevation %> m.ü.Meer</td>
                   </tr>
                   <tr>
                     <th scope="row">Gewässer</th>
@@ -184,7 +184,8 @@
             <%if(time_series.length === 0){%>
             <h6>Es sind keine Diagramme verfügbar.&nbsp;🤔</h6>
             <%} if(time_series.length > 0){time_series.forEach(graph => { %>
-            <%-include('../partials/graph',{graph,station}); %> <% }) }%>
+            <%-include('../partials/graph',{graph,station,unit_names}); %> <% })
+            }%>
           </div>
         </div>
       </div>

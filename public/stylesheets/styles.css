@@ -20,3 +20,12 @@
 .graph-container {
   border: 1px solid yellowgreen;
 }
+
+.graph-description {
+  padding: 20px 0 8px 0;
+}
+
+div[class^="wait-"] {
+  visibility: hidden;
+  padding: 0 0 0 16px;
+}

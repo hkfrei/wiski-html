@@ -1,15 +1,198 @@
-const changeGraphDate = (event) => {
-  const ts_id = event.target.id.split("-")[2];
-  const graph = document.getElementById(`graph-${ts_id}`);
-  const splitted_src = graph.src.split("&");
-  // remove the last element wich is the period
-  splitted_src.pop();
-  // add the new period to the array
-  splitted_src.push(`period=${event.target.value}`);
-  // create the new src url and assign it to the graph
-  const new_src = splitted_src.join("&");
-  graph.src = new_src;
-  return new_src;
+/*
+ * change the time-range of data a graph displays.
+ * @param {object} params - function parameter object.
+ * @param {umber} params.ts_id - kiwis time-series id.
+ * @param {string} params.period - the request period for the graph.
+ * @param {object} params.chart - chart.js instance.
+ * @param {string} params.url - url to request graph data from kiwis.
+ * @returns {Promise} - chart.js object.
+ */
+const changeGraphDate = ({ tsId, period, chart, url } = {}) => {
+  if (!tsId || !period) {
+    return;
+  }
+  const wait = document.querySelector(`.wait-${tsId}`);
+  if (period !== "PT24H") {
+    window.requestAnimationFrame(() => {
+      wait.style.visibility = "visible";
+    });
+  }
+  getGraphData({ url, tsId, period })
+    .then((timeSeries) => {
+      try {
+        const { data, labels } = prepStationData({
+          data: timeSeries[0].data,
+          canvas: chart.canvas,
+        });
+        chart.data.labels = labels;
+        chart.data.datasets[0].data = data;
+        chart.downsample();
+        chart.update();
+        updatePeriodLabel(
+          chart.data.datasets[0].data,
+          tsId,
+          timeSeries[0].stationparameter_name
+        );
+        window.requestAnimationFrame(() => {
+          wait.style.visibility = "hidden";
+        });
+
+        return chart;
+      } catch (error) {
+        return;
+      }
+    })
+    .catch((error) => alert(error));
 };
 
-export { changeGraphDate };
+/*
+ * gets graph data for a certain timeseries and period
+ * @param {object} params - function parameter object.
+ * @param {string} params.url - base url to fetch graph data.
+ * @param {number} params.tsId - the timeseries id.
+ * @param {string} params.period - the period to request the data for e.g. "PT24H".
+ * @returns {Promise} - a promise wich fullfills with a timeseries including the data.
+ */
+const getGraphData = ({ url, tsId, period } = {}) => {
+  if (!url || !tsId || !period) {
+    return Promise.reject(
+      "Diagrammdaten konnten nicht geladen werden. Bitte Funktionsparameter überprüfen."
+    );
+  }
+  return fetch(`${url}&ts_id=${tsId}&period=${period}`)
+    .then((response) => response.json())
+    .then((timeSeries) => timeSeries);
+};
+
+/*
+ * prepares kiwis timeseries data in order to be readable by chart.js.
+ * @param {object} params - function parameter object.
+ * @param {array} params.data - time-series data from kiwis.
+ * @param {<canvas>} params.canvas - html canvas element.
+ * @returns {object} result - { labels:['the labels'], data:['chart.js optimized data'] }.
+ */
+const prepStationData = ({ data, canvas } = {}) => {
+  if (!data || Array.isArray(data) === false) {
+    displayDiagramLoadError(canvas);
+  }
+  const result = { labels: [], data: [] };
+  data.forEach((element) => {
+    const date = new Date(element[0]);
+    result.labels.push(date);
+    result.data.push({ x: date, y: element[1] });
+  });
+  return result;
+};
+
+/*
+ * displays an error message on a 2d canvas.
+ * @param {<canvas>} node - html canvas element.
+ */
+const displayDiagramLoadError = (canvas) => {
+  const ctx = canvas.getContext("2d");
+  ctx.font = "16px Arial";
+  ctx.textAlign = "center";
+  ctx.fillText(
+    `Diagramm konnte nicht geladen werden.`,
+    canvas.width / 2,
+    canvas.height / 2
+  );
+};
+
+/*
+ * create a chart
+ * @param {objet} params - function parameter object.
+ * @param {object} params.ctx - 2d context from canvas.
+ * @param {array} params.labels - dates to label the x axes.
+ * @param {object} timeSerie - time series response object from kiwis.
+ * @param {array} data - the data to create the graph.
+ * @returns {object} chart - chart.js instance.
+ */
+const createChart = ({ ctx, labels, timeSerie, data, unitNames }) => {
+  return new Chart(ctx, {
+    type: "line",
+    data: {
+      labels,
+      datasets: [
+        {
+          backgroundColor: "rgba(0,191,255,0.1)", //color of the fill
+          borderColor: "deepskyblue", // color of the line
+          label: timeSerie.stationparameter_name,
+          data,
+        },
+      ],
+    },
+    options: {
+      downsample: {
+        enabled: true,
+        threshold: 50,
+      },
+      tooltips: { mode: "nearest" },
+      scales: {
+        xAxes: [
+          {
+            ticks: { maxTicksLimit: 4 },
+            type: "time",
+            time: {
+              displayFormats: { day: "D MMM", hour: "D MMM ha" },
+              tooltipFormat: "dddd DD.MM.YYYY HH:mm",
+            },
+          },
+        ],
+        yAxes: [
+          {
+            ticks: {
+              beginAtZero: false,
+            },
+            scaleLabel: {
+              display: true,
+              labelString: `${timeSerie.stationparameter_name} [${
+                unitNames[timeSerie.ts_unitsymbol]
+              }]`,
+            },
+          },
+        ],
+      },
+      showLines: true,
+    },
+  });
+};
+
+/*
+ * updates the label with the parameter and the max/min date above the diagram.
+ * @param {array} data - data to get min/max date.
+ * @param {number} tsId - the timeseries id.
+ * @param {string} parameter - the name of the measured parameter e.g. Pegel.
+ */
+const updatePeriodLabel = (data, tsId, parameter) => {
+  if (Array.isArray(data)) {
+    let minValue, maxValue;
+    let label = document.getElementById(`messzeitraum-${tsId}`);
+    label.innerHTML = "";
+    data.forEach((element, i) => {
+      if (i === 0) {
+        minValue = element.x;
+        maxValue = element.x;
+      } else {
+        if (element.x < minValue) {
+          minValue = element.x;
+        }
+        if (element.x > maxValue) {
+          maxValue = element.x;
+        }
+      }
+    });
+    const labelText = document.createElement("span");
+    labelText.innerHTML = `<strong>${parameter}:&nbsp;</strong> ${minValue.toLocaleDateString()} - ${maxValue.toLocaleDateString()}`;
+    label.append(labelText);
+  }
+};
+
+export {
+  changeGraphDate,
+  getGraphData,
+  prepStationData,
+  displayDiagramLoadError,
+  createChart,
+  updatePeriodLabel,
+};

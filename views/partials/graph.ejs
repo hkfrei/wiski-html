@@ -8,6 +8,7 @@
         name="time-options-<%= graph.ts_id %>"
         id="radio-pt24h-<%= graph.ts_id %>"
         value="PT24H"
+        data-diagramdataurl="<%= station.kiwis_host %><%=station.diagram_data %>"
         checked
       />
       <label class="form-check-label" for="radio-pt24h-<%= graph.ts_id %>"
@@ -20,6 +21,7 @@
         type="radio"
         name="time-options-<%= graph.ts_id %>"
         id="radio-pt48h-<%= graph.ts_id %>"
+        data-diagramdataurl="<%= station.kiwis_host %><%=station.diagram_data %>"
         value="PT48H"
       />
       <label class="form-check-label" for="radio-pt48h-<%= graph.ts_id %>"
@@ -32,6 +34,7 @@
         type="radio"
         name="time-options-<%= graph.ts_id %>"
         id="radio-p7d-<%= graph.ts_id %>"
+        data-diagramdataurl="<%= station.kiwis_host %><%=station.diagram_data %>"
         value="P7D"
       />
       <label class="form-check-label" for="radio-p7d-<%= graph.ts_id %>"
@@ -44,6 +47,7 @@
         type="radio"
         name="time-options-<%= graph.ts_id %>"
         id="radio-p1m-<%= graph.ts_id %>"
+        data-diagramdataurl="<%= station.kiwis_host %><%=station.diagram_data %>"
         value="P1M"
       />
       <label class="form-check-label" for="radio-p1m-<%= graph.ts_id %>"
@@ -56,19 +60,27 @@
         type="radio"
         name="time-options-<%= graph.ts_id %>"
         id="radio-p1y-<%= graph.ts_id %>"
+        data-diagramdataurl="<%= station.kiwis_host %><%=station.diagram_data %>"
         value="P1Y"
       />
       <label class="form-check-label" for="radio-p1y-<%= graph.ts_id %>"
         >1 Jahr</label
       >
+      <div class="wait-<%= graph.ts_id %>">
+        Please wait...
+        <div
+          class="spinner-border spinner-border-sm text-primary"
+          role="status"
+        >
+          <span class="sr-only">Loading...</span>
+        </div>
+      </div>
     </div>
   </div>
-  <img
-    id="graph-<%= graph.ts_id %>"
-    src="<%= station.kiwis_host %><%= station.graph_url %>&ts_id=<%=
-    graph.ts_id %>&width=500&height=250&period=PT24H"
-    class="img-fluid graph-image"
-  />
+  <section class="graph-description">
+    <div><strong>Station:</strong> <%= station.station_name %></div>
+    <div id="messzeitraum-<%=graph.ts_id %>"></div>
+  </section>
   <canvas
     id="graph-container-<%= graph.ts_id %>"
     data-tsid="<%= graph.ts_id %>"

@@ -1,73 +1,58 @@
-import { changeGraphDate } from "./modules/util_module.mjs";
+import {
+  changeGraphDate,
+  getGraphData,
+  prepStationData,
+  createChart,
+  updatePeriodLabel,
+} from "./modules/util_module.mjs";
+const charts = {};
+
 const timeRadios = document.querySelectorAll(".graph-time-radio");
 timeRadios.forEach((radio) =>
-  radio.addEventListener("click", (e) => changeGraphDate(e))
+  radio.addEventListener("click", (e) => {
+    const tsId = e.target.id.split("-")[2];
+    const period = e.target.value;
+    const url = e.target.dataset.diagramdataurl;
+    const chart = charts[tsId];
+    changeGraphDate({ tsId, period, chart, url });
+  })
 );
-
 const graphContainers = document.querySelectorAll(".graph-container");
 for (const node of graphContainers) {
-  const ts_id = node.dataset.tsid;
+  const tsId = node.dataset.tsid;
   const url = node.dataset.diagramdataurl;
-  const unit_names = JSON.parse(node.dataset.unitnames);
+  const unitNames = JSON.parse(node.dataset.unitnames);
   // json data for diagrams
-  fetch(`${url}&ts_id=${ts_id}`)
-    .then((response) => response.json())
-    .then((diagram_data) => {
+  getGraphData({ url, tsId, period: "PT24H" })
+    .then((timeSeries) => {
       const ctx = node.getContext("2d");
-      const station = diagram_data[0];
-      const labels = [];
-      const data = [];
-      station.data.forEach((element) => {
-        const date = new Date(element[0]);
-        labels.push(date);
-        data.push({ x: date, y: element[1] });
-      });
-      const chart = new Chart(ctx, {
-        type: "line",
-        data: {
+      const timeSerie = timeSeries[0];
+      let labels = [];
+      let data = [];
+      try {
+        const graphData = prepStationData({
+          data: timeSerie.data,
+          canvas: node,
+        });
+        labels = graphData.labels;
+        data = graphData.data;
+      } catch (error) {
+        return;
+      }
+      if (Array.isArray(data) && data.length > 0) {
+        charts[tsId] = createChart({
+          ctx,
+          timeSerie,
           labels,
-          datasets: [
-            {
-              backgroundColor: "rgba(0,191,255,0.1)", //color of the fill
-              borderColor: "deepskyblue", // color of the line
-              label: station.stationparameter_name,
-              data,
-            },
-          ],
-        },
-        options: {
-          downsample: {
-            enabled: true,
-            threshold: 50,
-          },
-          tooltips: { mode: "nearest" },
-          scales: {
-            xAxes: [
-              {
-                ticks: { maxTicksLimit: 4 },
-                type: "time",
-                time: {
-                  displayFormats: { day: "D MMM", hour: "D MMM ha" },
-                  tooltipFormat: "dddd DD.MM.YYYY HH:mm",
-                },
-              },
-            ],
-            yAxes: [
-              {
-                ticks: {
-                  beginAtZero: false,
-                },
-                scaleLabel: {
-                  display: true,
-                  labelString: `${station.stationparameter_name} [${
-                    unit_names[station.ts_unitsymbol]
-                  }]`,
-                },
-              },
-            ],
-          },
-          showLines: true,
-        },
-      });
-    });
+          unitNames,
+          data,
+        });
+      }
+      updatePeriodLabel(
+        charts[tsId].data.datasets[0].data,
+        tsId,
+        timeSerie.stationparameter_name
+      );
+    })
+    .catch((error) => alert(error));
 }

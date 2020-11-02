@@ -18,7 +18,7 @@
 }
 
 .graph-container {
-  border: 1px solid yellowgreen;
+  border: 1px dashed lightgray;
 }
 
 .graph-description {

@@ -11,6 +11,7 @@ const changeGraphDate = ({ tsId, period, chart, url } = {}) => {
   if (!tsId || !period) {
     return;
   }
+  const threshold = period === "P1Y" ? 100 : 50;
   const wait = document.querySelector(`.wait-${tsId}`);
   if (period !== "PT24H") {
     window.requestAnimationFrame(() => {
@@ -26,7 +27,7 @@ const changeGraphDate = ({ tsId, period, chart, url } = {}) => {
         });
         chart.data.labels = labels;
         chart.data.datasets[0].data = data;
-        chart.downsample();
+        chart.downsample(threshold);
         chart.update();
         updatePeriodLabel(
           chart.data.datasets[0].data,

@@ -10,9 +10,7 @@ const charts = {};
 const maximizeLink = document.querySelector(".maximize-link");
 if (maximizeLink) {
   if (
-    window.location.host.indexOf(
-      "https://wiski-html-h2eptfuxza-ew.a.run.app"
-    ) !== -1
+    window.location.host.indexOf("wiski-html-h2eptfuxza-ew.a.run.app") !== -1
   ) {
     maximizeLink.innerHTML = "";
   } else {

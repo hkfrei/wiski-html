@@ -1,6 +1,16 @@
 <div>
   <div class="time-radios">
-    <div class="time-radios--title">Messzeitraum</div>
+    <div class="time-radios--title">
+      Messzeitraum <% if(index === 0){%><a
+        href="https://wiski-html-h2eptfuxza-ew.a.run.app/wasser?stationid=<%=station.station_id%>"
+        class="maximize-link"
+        ><img
+          src="images/maximize.svg"
+          alt="maximize"
+          class="maximize-image float-right"
+          title="Diagramm in neuem Browser Tab öffnen" /></a
+      ><%} %>
+    </div>
     <div class="form-check form-check-inline">
       <input
         class="form-check-input graph-time-radio"

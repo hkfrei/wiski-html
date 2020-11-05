@@ -8,22 +8,11 @@ import {
 const charts = {};
 
 const maximizeLink = document.querySelector(".maximize-link");
-if (maximizeLink) {
-  if (
-    window.location.host.indexOf("wiski-html-h2eptfuxza-ew.a.run.app") !== -1
-  ) {
-    maximizeLink.innerHTML = "";
-  } else {
-    maximizeLink.addEventListener("click", (e) => {
-      const station_id = e.target.dataset.stationid
-        ? e.target.dataset.stationid
-        : e.target.parentElement.dataset.stationid;
-      window.open(
-        `https://wiski-html-h2eptfuxza-ew.a.run.app/wasser?stationid=${station_id}`,
-        "diagram"
-      );
-    });
-  }
+if (
+  maximizeLink &&
+  window.location.host.indexOf("wiski-html-h2eptfuxza-ew.a.run.app") !== -1
+) {
+  maximizeLink.innerHTML = "";
 }
 
 const timeRadios = document.querySelectorAll(".graph-time-radio");

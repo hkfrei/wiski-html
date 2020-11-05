@@ -183,9 +183,25 @@
           <div class="card-body">
             <%if(time_series.length === 0){%>
             <h6>Es sind keine Diagramme verfügbar.&nbsp;🤔</h6>
-            <%} if(time_series.length > 0){time_series.forEach(graph => { %>
-            <%-include('../partials/graph',{graph,station,unit_names}); %> <% })
-            }%>
+            <%}%> <%if(time_series.length > 0){%>
+
+            <div class="d-flex justify-content-end">
+              <span
+                class="maximize-link"
+                data-stationid="<%= station.station_id %>"
+              >
+                <img
+                  src="images/maximize.svg"
+                  alt="maximize"
+                  class="maximize-image"
+                />
+                &nbsp; vergrössern
+              </span>
+            </div>
+
+            <%}%> <% if(time_series.length > 0){time_series.forEach(graph => {
+            %> <%-include('../partials/graph',{graph,station,unit_names}); %> <%
+            }) }%>
           </div>
         </div>
       </div>

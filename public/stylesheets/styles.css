@@ -7,6 +7,15 @@
   padding: 24px 0 0 0;
 }
 
+.maximize-link {
+  cursor: pointer;
+}
+
+.maximize-image {
+  width: 24px;
+  height: 24px;
+}
+
 .time-radios--title {
   padding: 0 0 12px 0;
   font-weight: bold;

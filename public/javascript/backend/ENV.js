@@ -17,4 +17,5 @@ module.exports = {
     m: "m.ü.Meer",
     cumec: "m3/s",
   },
+  service_host: "https://wiski-html-h2eptfuxza-oa.a.run.app",
 };

@@ -50,6 +50,7 @@ const waterUtil = {
       measure_params,
       time_series,
       unit_names: env.unit_names,
+      service_host: env.service_host,
     };
   },
 };

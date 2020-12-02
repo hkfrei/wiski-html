@@ -1,0 +1,10 @@
+<div class="infoelement">
+  <div class="infoelement__key"><%= key %></div>
+  <% if(key === "Messparameter"){ %>
+  <div class="infoelement__value"><%= value.join(" | ") %></div>
+  <% } else{ %>
+  <div class="infoelement__value">
+    <%= value %>
+  </div>
+  <% } %>
+</div>

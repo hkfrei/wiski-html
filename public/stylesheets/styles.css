@@ -1,3 +1,31 @@
+.infoelement {
+  border-bottom: 1px solid #dee2e6;
+  display: flex;
+  padding: 12px 16px;
+}
+
+.infoelement__key,
+.infoelement__value {
+  font-size: 14px;
+  width: 50%;
+}
+.infoelement__key {
+  padding-right: 8px;
+  font-weight: 600;
+}
+.card {
+  border: 1px solid #b8daff;
+}
+.card-header {
+  background-color: #ecf5ff;
+  border-bottom: 1px dotted #b8daff;
+  padding: 0.75rem 0;
+}
+
+.card-body-nospace {
+  padding: 0;
+}
+
 .accordion-image {
   width: 18px;
   height: 18px;

@@ -33,92 +33,32 @@
           aria-labelledby="headingOne"
           data-parent="#accordionExample"
         >
-          <div class="card-body">
-            <div class="table-responsive">
-              <table class="table table-striped">
-                <tbody>
-                  <tr>
-                    <th scope="row">Status</th>
-                    <td>
-                      <% if(station.ONLINE_PUBLICATION){ %><span
-                        class="badge badge-pill badge-success"
-                      >
-                        Online</span
-                      >
-                      <% } else { %>
-                      <span class="badge badge-pill badge-danger">
-                        Offline</span
-                      >
-                      <% } %>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">Name</th>
-                    <td>
-                      <%= station.station_name %>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">Fachgebiet</th>
-                    <td><%= station.object_type %></td>
-                  </tr>
-                  <tr>
-                    <th scope="row">Messparameter</th>
-                    <td>
-                      <%= measure_params.join(" | ") %>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">Datenherr</th>
-                    <td><%= station.DATAOWNER %></td>
-                  </tr>
-                  <tr>
-                    <th scope="row">Stationshöhe</th>
-                    <td><%= station.station_elevation %> m.ü.Meer</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">Gewässer</th>
-                    <td><%= station.WTO_OBJECT %></td>
-                  </tr>
-                  <tr>
-                    <th scope="row">Standort</th>
-                    <td><%= station.site_name %></td>
-                  </tr>
-                  <tr>
-                    <th scope="row">Stationseinzugsgebiet</th>
-                    <td><%= station.CATCHMENT_SIZE.substring(8) %></td>
-                  </tr>
-                  <tr>
-                    <th scope="row">Koordinaten (LV95)</th>
-                    <td>
-                      <%=
-                      parseInt(station.station_local_x).toLocaleString("de-CH")
-                      %> / <%=
-                      parseInt(station.station_local_y).toLocaleString("de-CH")
-                      %>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">Messbeginn</th>
-                    <%const messbeginn = new
-                    Date(station.station_diary_status.substring(0,10)).toLocaleDateString("de-CH")
-                    %>
-                    <td><%= messbeginn %> | <%= station.station_status %></td>
-                  </tr>
-                  <tr>
-                    <th scope="row">Stationswebseite</th>
-                    <td>
-                      <a
-                        href="<%= station.station_website_host %><%=station.stationNumber%>.html"
-                        target="blank"
-                        rel="noreferrer noopener"
-                        >Link</a
-                      >
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+          <%const messbeginn = new
+          Date(station.station_diary_status.substring(0,10)).toLocaleDateString("de-CH")
+          %>
+          <div class="card-body card-body-nospace">
+            <%-include('../partials/station-status',{online:station.ONLINE_PUBLICATION});%>
+            <%-include('../partials/station-info-element',{key:"Name",value:station.station_name});%>
+            <%-include('../partials/station-info-element',{key:"Fachgebiet",value:station.object_type});%>
+            <%-include('../partials/station-info-element',{key:"Messparameter",value:measure_params});
+            %>
+            <%-include('../partials/station-info-element',{key:"Datenherr",value:station.DATAOWNER});
+            %>
+            <%-include('../partials/station-info-element',{key:"Stationshöhe",value:`${station.station_elevation}
+            m.ü.Meer`}); %>
+            <%-include('../partials/station-info-element',{key:"Gewässer",value:station.WTO_OBJECT});
+            %>
+            <%-include('../partials/station-info-element',{key:"Standort",value:station.site_name});
+            %>
+            <%-include('../partials/station-info-element',{key:"Stationseinzugsgebiet",value:station.CATCHMENT_SIZE.substring(8)});
+            %> <%-include('../partials/station-info-element',{key:`Koordinaten
+            (LV95)`,value:`${parseInt(station.station_local_x).toLocaleString("de-CH")}
+            / ${parseInt(station.station_local_y).toLocaleString("de-CH")}`});
+            %>
+            <%-include('../partials/station-info-element',{key:"Messbeginn",value:`${messbeginn}
+            | ${station.station_status}`}); %>
+            <%-include('../partials/station-link',{key:"Stationswebsite",
+            station}); %>
           </div>
         </div>
       </div>

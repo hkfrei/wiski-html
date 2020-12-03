@@ -163,9 +163,8 @@ const createChart = ({ ctx, labels, timeSerie, data, unitNames }) => {
  * updates the label with the parameter and the max/min date above the diagram.
  * @param {array} data - data to get min/max date.
  * @param {number} tsId - the timeseries id.
- * @param {string} parameter - the name of the measured parameter e.g. Pegel.
  */
-const updatePeriodLabel = (data, tsId, parameter) => {
+const updatePeriodLabel = (data, tsId) => {
   if (Array.isArray(data)) {
     let minValue, maxValue;
     let label = document.getElementById(`messzeitraum-${tsId}`);
@@ -184,7 +183,8 @@ const updatePeriodLabel = (data, tsId, parameter) => {
       }
     });
     const labelText = document.createElement("span");
-    labelText.innerHTML = `<strong>${parameter}:&nbsp;</strong> ${minValue.toLocaleDateString()} - ${maxValue.toLocaleDateString()}`;
+    labelText.style.fontWeight = "normal";
+    labelText.innerHTML = `(${minValue.toLocaleDateString()} - ${maxValue.toLocaleDateString()})`;
     label.append(labelText);
   }
 };

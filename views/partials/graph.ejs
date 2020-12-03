@@ -1,15 +1,11 @@
 <div>
+  <div class="measurement__parametertitle">
+    <%= graph.parametertype_name.toUpperCase() %> <br />
+    <span class="station-name"><%= station.station_name %></span>
+  </div>
   <div class="time-radios">
     <div class="time-radios--title">
-      Messzeitraum <% if(index === 0){%><a
-        href="<%=service_host%>/wasser?stationid=<%=station.station_id%>"
-        class="maximize-link"
-        ><img
-          src="images/maximize.svg"
-          alt="maximize"
-          class="maximize-image float-right"
-          title="Diagramm in neuem Browser Tab öffnen" /></a
-      ><%} %>
+      Messzeitraum <span id="messzeitraum-<%=graph.ts_id %>"></span>
     </div>
     <div class="form-check form-check-inline">
       <input
@@ -87,10 +83,6 @@
       </div>
     </div>
   </div>
-  <section class="graph-description">
-    <div><strong>Station:</strong> <%= station.station_name %></div>
-    <div id="messzeitraum-<%=graph.ts_id %>"></div>
-  </section>
   <canvas
     id="graph-container-<%= graph.ts_id %>"
     data-tsid="<%= graph.ts_id %>"

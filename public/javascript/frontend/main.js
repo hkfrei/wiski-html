@@ -56,11 +56,7 @@ for (const node of graphContainers) {
           data,
         });
       }
-      updatePeriodLabel(
-        charts[tsId].data.datasets[0].data,
-        tsId,
-        timeSerie.stationparameter_name
-      );
+      updatePeriodLabel(charts[tsId].data.datasets[0].data, tsId);
     })
     .catch((error) => alert(error));
 }

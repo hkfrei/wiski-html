@@ -44,13 +44,12 @@
   padding: 24px 0 0 0;
 }
 
-.maximize-link {
-  cursor: pointer;
+.station-name {
+  font-weight: normal;
 }
 
-.maximize-image {
-  width: 24px;
-  height: 24px;
+.time-radios {
+  padding: 12px 0;
 }
 
 .time-radios--title {
@@ -65,10 +64,6 @@
 
 .graph-container {
   border: 1px dashed lightgray;
-}
-
-.graph-description {
-  padding: 20px 0 8px 0;
 }
 
 div[class^="wait-"] {

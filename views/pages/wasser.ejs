@@ -50,7 +50,7 @@
             %>
             <%-include('../partials/station-info-element',{key:"Standort",value:station.site_name});
             %>
-            <%-include('../partials/station-info-element',{key:"Stationseinzugsgebiet",value:station.CATCHMENT_SIZE.substring(8)});
+            <%-include('../partials/station-info-element',{key:"Einzugsgebiet",value:station.CATCHMENT_SIZE.substring(8)});
             %> <%-include('../partials/station-info-element',{key:`Koordinaten
             (LV95)`,value:`${parseInt(station.station_local_x).toLocaleString("de-CH")}
             / ${parseInt(station.station_local_y).toLocaleString("de-CH")}`});

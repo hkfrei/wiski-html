@@ -46,12 +46,13 @@
             %>
             <%-include('../partials/station-info-element',{key:"Stationshöhe",value:`${station.station_elevation}
             m.ü.Meer`}); %>
-            <%-include('../partials/station-info-element',{key:"Gewässer",value:station.WTO_OBJECT});
-            %>
+            <%-include('../partials/station-info-element',{key:"Gewässer",value:station.WTO_OBJECT
+            || "Unbekannt"}); %>
             <%-include('../partials/station-info-element',{key:"Standort",value:station.site_name});
             %>
-            <%-include('../partials/station-info-element',{key:"Einzugsgebiet",value:station.CATCHMENT_SIZE.substring(8)});
-            %> <%-include('../partials/station-info-element',{key:`Koordinaten
+            <%-include('../partials/station-info-element',{key:"Einzugsgebiet",value:station.CATCHMENT_SIZE.substring(8)
+            || "Unbekannt"}); %>
+            <%-include('../partials/station-info-element',{key:`Koordinaten
             (LV95)`,value:`${parseInt(station.station_local_x).toLocaleString("de-CH")}
             / ${parseInt(station.station_local_y).toLocaleString("de-CH")}`});
             %>

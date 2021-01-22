@@ -43,7 +43,7 @@ const changeGraphDate = ({ tsId, period, chart, url } = {}) => {
         return;
       }
     })
-    .catch((error) => alert(error));
+    .catch((error) => console.error(error));
 };
 
 /*
@@ -73,7 +73,7 @@ const getGraphData = ({ url, tsId, period } = {}) => {
  * @returns {object} result - { labels:['the labels'], data:['chart.js optimized data'] }.
  */
 const prepStationData = ({ data, canvas } = {}) => {
-  if (!data || Array.isArray(data) === false) {
+  if (!data || Array.isArray(data) === false || data.length === 0) {
     displayDiagramLoadError(canvas);
   }
   const result = { labels: [], data: [] };

@@ -74,7 +74,9 @@ for (const node of graphContainers) {
           data,
         });
       }
-      updatePeriodLabel(charts[tsId].data.datasets[0].data, tsId);
+      if (charts[tsId]) {
+        updatePeriodLabel(charts[tsId].data.datasets[0].data, tsId);
+      }
     })
-    .catch((error) => alert(error));
+    .catch((error) => console.error(error));
 }

@@ -1,23 +1,28 @@
 <%if(measurements.length === 0){%>
 <h6>Es sind keine Messdaten verfügbar.&nbsp;🤔</h6>
-<%} if(measurements.length > 0){%> <% measurements.forEach(measurement => { %>
+<%=measurements %> <%} if(measurements.length > 0){%> <%
+measurements.forEach(measurement => { %>
+
 <div class="measurement__parametertitle">
   <%= measurement.parametertype_name %>
 </div>
 <div class="infoelement">
   <div class="infoelement__key">Messwert</div>
   <div class="infoelement__value">
-    <%= measurement.data[0][1] %> <% if(unit_names[measurement.ts_unitsymbol]){
-    %> <%= unit_names[measurement.ts_unitsymbol] %> <%} else { %> <%=
-    measurement.ts_unitsymbol %> <% } %>
+    <% if(measurement.data.length > 0){%> <%= measurement.data[0][1] %> <%
+    if(unit_names[measurement.ts_unitsymbol]){ %> <%=
+    unit_names[measurement.ts_unitsymbol] %> <%} else { %> <%=
+    measurement.ts_unitsymbol %> <% }} else{%>
+    <span>Keine Daten verfügbar</span><%}%>
   </div>
 </div>
 <div class="infoelement">
   <div class="infoelement__key">Gemessen am</div>
   <div class="infoelement__value">
-    <% const date = new Date(measurement.data[0][0]) %> <%=
-    date.toLocaleDateString("de-ch") %> | <%= date.toLocaleTimeString("de-ch")
-    %>
+    <% if(measurement.data.length > 0){%> <% const date = new
+    Date(measurement.data[0][0]) %> <%= date.toLocaleDateString("de-ch") %> |
+    <%= date.toLocaleTimeString("de-ch") %><%} else{%>
+    <span>Keine Daten verfügbar</span><%}%>
   </div>
 </div>
 

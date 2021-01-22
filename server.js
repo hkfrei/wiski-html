@@ -67,7 +67,7 @@ app.get("/wasser", async (req, res, next) => {
       unit_names: station.unit_names,
       service_host: station.service_host,
     });
-    console.log(station);
+    //console.log(station);
   } catch (error) {
     return next(error);
   }

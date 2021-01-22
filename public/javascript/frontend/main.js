@@ -25,6 +25,24 @@ timeRadios.forEach((radio) =>
     changeGraphDate({ tsId, period, chart, url });
   })
 );
+
+/* send messages to the parent window when the size of the
+ * accordion changes
+ */
+const container = document.querySelector(".info-container");
+const accordionHeaders = document.querySelectorAll(".btn-link");
+accordionHeaders.forEach((header) => {
+  header.addEventListener("click", (e) => {
+    window.setTimeout(function () {
+      const parent = window.parent;
+      parent.postMessage(
+        { height: container.offsetHeight },
+        "http://app.lisag.ch:3000" // @TODO change to production url
+      );
+    }, 450); // wait for the animation to end
+  });
+});
+
 const graphContainers = document.querySelectorAll(".graph-container");
 for (const node of graphContainers) {
   const tsId = node.dataset.tsid;

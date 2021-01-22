@@ -13,12 +13,16 @@ const waterUtil = {
     );
     let stationNumber = "";
     const firstStation = filtered_stations[0];
-    // get the numeric part of the station number to be able to create the link to the station website
-    for (var i = 0; i < firstStation.station_no.length; i++) {
-      if (Number.isInteger(parseInt(firstStation.station_no[i]))) {
-        stationNumber += firstStation.station_no[i];
+    if (firstStation.station_no.toLowerCase().indexOf("ch") !== -1) {
+      // if it is a ch station get the numeric part of the station number
+      // to be able to create the link to the station website.
+      for (var i = 0; i < firstStation.station_no.length; i++) {
+        if (Number.isInteger(parseInt(firstStation.station_no[i]))) {
+          stationNumber += firstStation.station_no[i];
+        }
       }
     }
+
     // get possible diagrams/timeseries this station
     const timeSeriesResponse = await fetch(
       `${env.kiwis_host}${env.time_series_list}&station_id=${stationid}`

@@ -7,14 +7,6 @@ import {
 } from "./modules/util_module.mjs";
 const charts = {};
 
-const maximizeLink = document.querySelector(".maximize-link");
-if (
-  maximizeLink &&
-  window.location.host.indexOf("wiski-html-h2eptfuxza-ew.a.run.app") !== -1
-) {
-  maximizeLink.innerHTML = "";
-}
-
 const timeRadios = document.querySelectorAll(".graph-time-radio");
 timeRadios.forEach((radio) =>
   radio.addEventListener("click", (e) => {

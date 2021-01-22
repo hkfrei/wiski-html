@@ -27,10 +27,7 @@ accordionHeaders.forEach((header) => {
   header.addEventListener("click", (e) => {
     window.setTimeout(function () {
       const parent = window.parent;
-      parent.postMessage(
-        { height: container.offsetHeight },
-        "http://app.lisag.ch:3000" // @TODO change to production url
-      );
+      parent.postMessage({ height: container.offsetHeight }, "*");
     }, 450); // wait for the animation to end
   });
 });

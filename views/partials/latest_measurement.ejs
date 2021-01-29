@@ -20,8 +20,8 @@ measurements.forEach(measurement => { %>
   <div class="infoelement__key">Gemessen am</div>
   <div class="infoelement__value">
     <% if(measurement.data.length > 0){%> <% const date = new
-    Date(measurement.data[0][0]) %> <%= date.toLocaleDateString("de-ch") %> |
-    <%= date.toLocaleTimeString("de-ch") %><%} else{%>
+    Date(measurement.data[0][0]) %> <%= date.toLocaleDateString("de-CH") %> |
+    <%= date.toLocaleTimeString("de-CH") %><%} else{%>
     <span>Keine Daten verfügbar</span><%}%>
   </div>
 </div>

@@ -52,11 +52,13 @@ app.get("/", function (req, res) {
 
 // wasser page
 app.get("/wasser", async (req, res, next) => {
+  res.set("Cache-Control", "public, max-age=300, s-maxage=600s");
   const { stationid } = req.query;
   if (!stationid) {
     res.render("pages/index", {
       endpoints,
     });
+    return;
   }
   try {
     const station = await waterUtil.getWaterStationInfo(stationid);

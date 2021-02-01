@@ -34,7 +34,7 @@
           data-parent="#accordionExample"
         >
           <%const messbeginn = new
-          Date(station.station_diary_status.substring(0,10)).toLocaleDateString("de-CH",{timeZone:"Europe/Zurich"})
+          Date(station.station_diary_status.substring(0,10)).toLocaleDateString("de-CH")
           %>
           <div class="card-body card-body-nospace">
             <%-include('../partials/station-status',{online:station.ONLINE_PUBLICATION});%>
@@ -53,8 +53,8 @@
             <%-include('../partials/station-info-element',{key:"Einzugsgebiet",value:station.CATCHMENT_SIZE.substring(8)
             || "Unbekannt"}); %>
             <%-include('../partials/station-info-element',{key:`Koordinaten
-            (LV95)`,value:`${parseInt(station.station_local_x).toLocaleString("de-CH", {timeZone:"Europe/Zurich"})}
-            / ${parseInt(station.station_local_y).toLocaleString("de-CH", {timeZone:"Europe/Zurich"})}`});
+            (LV95)`,value:`${parseInt(station.station_local_x).toLocaleString("de-CH")}
+            / ${parseInt(station.station_local_y).toLocaleString("de-CH")}`});
             %>
             <%-include('../partials/station-info-element',{key:"Messbeginn",value:`${messbeginn}
             | ${station.station_status}`}); %>

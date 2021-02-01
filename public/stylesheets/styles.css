@@ -64,6 +64,7 @@
 
 .graph-container {
   border: 1px dashed lightgray;
+  max-width: 100%;
 }
 
 div[class^="wait-"] {

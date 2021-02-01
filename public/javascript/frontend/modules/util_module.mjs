@@ -6,7 +6,6 @@ const noDataPeriodLabels = {
   p1y: "Innerhalb des letzten Jahres gibt es keine Daten.",
 };
 const locale = "de-CH";
-const timeZone = "Europe/Zurich";
 /*
  * change the time-range of data a graph displays.
  * @param {object} params - function parameter object.
@@ -193,9 +192,9 @@ const updatePeriodLabel = ({ data, tsId, period } = {}) => {
     const labelText = document.createElement("span");
     labelText.style.fontWeight = "normal";
     if (minValue && maxValue) {
-      labelText.innerHTML = `(${minValue.toLocaleDateString(locale, {
-        timeZone,
-      })} ${maxValue.toLocaleDateString(locale, { timeZone })})`;
+      labelText.innerHTML = `(${minValue.toLocaleDateString(
+        locale
+      )} bis ${maxValue.toLocaleDateString(locale)})`;
     } else {
       labelText.classList.add("text-danger");
       labelText.innerHTML = `<br />${noDataPeriodLabels[period]}`;

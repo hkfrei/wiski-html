@@ -5,6 +5,7 @@ import {
   createChart,
   updatePeriodLabel,
 } from "./modules/util_module.mjs";
+
 const charts = {};
 
 const timeRadios = document.querySelectorAll(".graph-time-radio");
@@ -54,7 +55,7 @@ for (const node of graphContainers) {
       } catch (error) {
         return;
       }
-      if (Array.isArray(data) && data.length > 0) {
+      if (Array.isArray(data)) {
         charts[tsId] = createChart({
           ctx,
           timeSerie,
@@ -64,7 +65,11 @@ for (const node of graphContainers) {
         });
       }
       if (charts[tsId]) {
-        updatePeriodLabel(charts[tsId].data.datasets[0].data, tsId);
+        updatePeriodLabel({
+          data: charts[tsId].data.datasets[0].data,
+          tsId,
+          period: "pt24h",
+        });
       }
     })
     .catch((error) => console.error(error));

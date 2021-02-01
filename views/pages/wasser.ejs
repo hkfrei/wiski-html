@@ -126,7 +126,7 @@
             <h6>Es sind keine Diagramme verfügbar.&nbsp;🤔</h6>
             <%} if(time_series.length > 0){time_series.forEach((graph,index) =>
             { %>
-            <%-include('../partials/graph',{graph,station,index,service_host});%>
+            <%-include('../partials/graph',{graph,station,index,service_host,measure_periods});%>
             <% }) }%>
           </div>
         </div>

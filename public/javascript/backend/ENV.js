@@ -18,4 +18,11 @@ module.exports = {
     cumec: "m3/s",
   },
   service_host: "https://wiski-html-h2eptfuxza-oa.a.run.app",
+  measure_periods: {
+    pt24h: "24 Std.",
+    pt48h: "48 Std.",
+    p7d: "1 Woche",
+    p1m: "1 Monat",
+    p1y: "1 Jahr",
+  },
 };

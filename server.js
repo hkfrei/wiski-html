@@ -65,6 +65,7 @@ app.get("/wasser", async (req, res, next) => {
       time_series: station.time_series,
       measure_params: station.measure_params,
       unit_names: station.unit_names,
+      measure_periods: station.measure_periods,
       service_host: station.service_host,
     });
     //console.log(station);

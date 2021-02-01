@@ -7,71 +7,21 @@
     <div class="time-radios--title">
       Messzeitraum <span id="messzeitraum-<%=graph.ts_id %>"></span>
     </div>
+    <% for(key in measure_periods) {%> 
+      <% let checked = key === "pt24h" ? "checked" : "" %>
     <div class="form-check form-check-inline">
       <input
         class="form-check-input graph-time-radio"
         type="radio"
         name="time-options-<%= graph.ts_id %>"
-        id="radio-pt24h-<%= graph.ts_id %>"
-        value="PT24H"
-        data-diagramdataurl="<%= station.kiwis_host %><%=station.diagram_data %>"
-        checked
+        id="radio-<%= key %>-<%= graph.ts_id %>"
+        value="<%= key %>"
+        data-diagramdataurl="<%= station.kiwis_host %><%=station.diagram_data %>" <%= checked %>
       />
-      <label class="form-check-label" for="radio-pt24h-<%= graph.ts_id %>"
-        >24 Std.</label
+      <label class="form-check-label" for="radio-<%= key %>-<%= graph.ts_id %>"
+        ><%= measure_periods[key] %></label
       >
-    </div>
-    <div class="form-check form-check-inline">
-      <input
-        class="form-check-input graph-time-radio"
-        type="radio"
-        name="time-options-<%= graph.ts_id %>"
-        id="radio-pt48h-<%= graph.ts_id %>"
-        data-diagramdataurl="<%= station.kiwis_host %><%=station.diagram_data %>"
-        value="PT48H"
-      />
-      <label class="form-check-label" for="radio-pt48h-<%= graph.ts_id %>"
-        >48 Std.</label
-      >
-    </div>
-    <div class="form-check form-check-inline">
-      <input
-        class="form-check-input graph-time-radio"
-        type="radio"
-        name="time-options-<%= graph.ts_id %>"
-        id="radio-p7d-<%= graph.ts_id %>"
-        data-diagramdataurl="<%= station.kiwis_host %><%=station.diagram_data %>"
-        value="P7D"
-      />
-      <label class="form-check-label" for="radio-p7d-<%= graph.ts_id %>"
-        >1 Woche</label
-      >
-    </div>
-    <div class="form-check form-check-inline">
-      <input
-        class="form-check-input graph-time-radio"
-        type="radio"
-        name="time-options-<%= graph.ts_id %>"
-        id="radio-p1m-<%= graph.ts_id %>"
-        data-diagramdataurl="<%= station.kiwis_host %><%=station.diagram_data %>"
-        value="P1M"
-      />
-      <label class="form-check-label" for="radio-p1m-<%= graph.ts_id %>"
-        >1 Monat</label
-      >
-    </div>
-    <div class="form-check form-check-inline">
-      <input
-        class="form-check-input graph-time-radio"
-        type="radio"
-        name="time-options-<%= graph.ts_id %>"
-        id="radio-p1y-<%= graph.ts_id %>"
-        data-diagramdataurl="<%= station.kiwis_host %><%=station.diagram_data %>"
-        value="P1Y"
-      />
-      <label class="form-check-label" for="radio-p1y-<%= graph.ts_id %>"
-        >1 Jahr</label
-      >
+      <% if(key === "p1y"){ %>
       <div class="wait-<%= graph.ts_id %>">
         Please wait...
         <div
@@ -81,7 +31,9 @@
           <span class="sr-only">Loading...</span>
         </div>
       </div>
+      <%}%>
     </div>
+    <%}%>
   </div>
   <canvas
     id="graph-container-<%= graph.ts_id %>"

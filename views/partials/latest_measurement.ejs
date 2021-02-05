@@ -9,11 +9,11 @@ measurements.forEach(measurement => { %>
 <div class="infoelement">
   <div class="infoelement__key">Messwert</div>
   <div class="infoelement__value">
-    <% if(measurement.data.length > 0){%> <%= measurement.data[0][1] %> <%
-    if(unit_names[measurement.ts_unitsymbol]){ %> <%=
-    unit_names[measurement.ts_unitsymbol] %> <%} else { %> <%=
-    measurement.ts_unitsymbol %> <% }} else{%>
-    <span>Keine Daten verfügbar</span><%}%>
+    <% if(measurement.value){%><%= measurement.value %> <%}%>
+    <% if(measurement.absoluteValue){%><br /><%= measurement.absoluteValue %> <%}%>
+    <% if(!measurement.data[0]){%> 
+        <span>Keine Daten verfügbar</span>
+      <%}%>
   </div>
 </div>
 <div class="infoelement">

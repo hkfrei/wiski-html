@@ -66,9 +66,10 @@ const waterUtil = {
       // create the correct unit labels
       latest_measurements.push(labelLatestMeasurement(latest_measurement[0]));
     }
-
     // extract the measure parameters (names) for this station
-    const measure_params = time_series.map((serie) => serie.parametertype_name);
+    const measure_params = time_series.map(
+      (serie) => serie.stationparameter_name
+    );
     return {
       info: {
         ...firstStation,

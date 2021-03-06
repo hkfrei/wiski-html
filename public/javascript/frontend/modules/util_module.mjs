@@ -151,9 +151,7 @@ const createChart = ({ ctx, labels, timeSerie, data, unitNames }) => {
             },
             scaleLabel: {
               display: true,
-              labelString: `${timeSerie.stationparameter_name} [${
-                unitNames[timeSerie.ts_unitsymbol]
-              }]`,
+              labelString: `[${unitNames[timeSerie.ts_unitsymbol]}]`,
             },
           },
         ],

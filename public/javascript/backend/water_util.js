@@ -19,9 +19,11 @@ const waterUtil = {
         stationNumber += firstStation.station_no[i];
       }
     }
+    // get the correct timeseries group for this station
+    const ts_group_id = env.ts_group_id[firstStation.object_type];
     // get possible diagrams/timeseries this station
     const timeSeriesResponse = await fetch(
-      `${env.kiwis_host}${env.time_series_list}&station_id=${stationid}`
+      `${env.kiwis_host}${env.time_series_list}&station_id=${stationid}&timeseriesgroup_id=${ts_group_id}`
     );
     const time_series = await timeSeriesResponse.json();
 
@@ -39,7 +41,7 @@ const waterUtil = {
     const measure_params = time_series.map((serie) => serie.parametertype_name);
     return {
       info: {
-        ...filtered_stations[0],
+        ...firstStation,
         stationNumber,
         station_website_host: env.hydrodaten_station_host,
         kiwis_host: env.kiwis_host,

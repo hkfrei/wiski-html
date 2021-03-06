@@ -1,7 +1,7 @@
 module.exports = {
   kiwis_host: "https://kiwis.innetag.ch",
   time_series_list:
-    "/KiWIS/KiWIS?returnfields=station_id%2Cts_id%2Cts_name%2Cts_type_name%2Cparametertype_name%2Cstationparameter_name%2Ccoverage%2Cts_unitname%2Cts_unitsymbol%2Cts_unitname_abs%2Cts_unitsymbol_abs&timeseriesgroup_id=41608&id=timeSeriesList&datasource=1&service=kisters&type=queryServices&request=getTimeseriesList&format=objson",
+    "/KiWIS/KiWIS?returnfields=station_id%2Cts_id%2Cts_name%2Cts_type_name%2Cparametertype_name%2Cstationparameter_name%2Ccoverage%2Cts_unitname%2Cts_unitsymbol%2Cts_unitname_abs%2Cts_unitsymbol_abs&id=timeSeriesList&datasource=1&service=kisters&type=queryServices&request=getTimeseriesList&format=objson",
   latest_measurement:
     "/KiWIS/KiWIS?datasource=1&service=kisters&type=queryServices&request=getTimeseriesValues&metadata=true&format=json",
   diagram_data:
@@ -16,6 +16,12 @@ module.exports = {
   unit_names: {
     m: "m.ü.Meer",
     cumec: "m3/s",
+  },
+  ts_group_id: {
+    Boden: 47043,
+    "Niederschlag - Hydrometrie": 41608,
+    "Fliessgewässer - Hydrometrie": 41608,
+    "Grundwasser - Hydrometrie": 41608,
   },
   service_host: "https://wiski-html-h2eptfuxza-oa.a.run.app",
 };

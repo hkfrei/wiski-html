@@ -1,3 +1,11 @@
+const noDataPeriodLabels = {
+  pt24h: "Innerhalb der letzten 24 Std. gibt es keine Daten.",
+  pt48h: "Innerhalb der letzten 48 Std. gibt es keine Daten.",
+  p7d: "Innerhalb der letzten Woche gibt es keine Daten.",
+  p1m: "Innerhalb des letzten Monats gibt es keine Daten.",
+  p1y: "Innerhalb des letzten Jahres gibt es keine Daten.",
+};
+const locale = "de-CH";
 /*
  * change the time-range of data a graph displays.
  * @param {object} params - function parameter object.
@@ -29,11 +37,7 @@ const changeGraphDate = ({ tsId, period, chart, url } = {}) => {
         chart.data.datasets[0].data = data;
         chart.downsample(threshold);
         chart.update();
-        updatePeriodLabel(
-          chart.data.datasets[0].data,
-          tsId,
-          timeSeries[0].stationparameter_name
-        );
+        updatePeriodLabel({ data: chart.data.datasets[0].data, tsId, period });
         window.requestAnimationFrame(() => {
           wait.style.visibility = "hidden";
         });
@@ -43,7 +47,7 @@ const changeGraphDate = ({ tsId, period, chart, url } = {}) => {
         return;
       }
     })
-    .catch((error) => alert(error));
+    .catch((error) => console.error(error));
 };
 
 /*
@@ -73,7 +77,7 @@ const getGraphData = ({ url, tsId, period } = {}) => {
  * @returns {object} result - { labels:['the labels'], data:['chart.js optimized data'] }.
  */
 const prepStationData = ({ data, canvas } = {}) => {
-  if (!data || Array.isArray(data) === false) {
+  if (!data || Array.isArray(data) === false || data.length === 0) {
     displayDiagramLoadError(canvas);
   }
   const result = { labels: [], data: [] };
@@ -94,7 +98,7 @@ const displayDiagramLoadError = (canvas) => {
   ctx.font = "16px Arial";
   ctx.textAlign = "center";
   ctx.fillText(
-    `Diagramm konnte nicht geladen werden.`,
+    "Diagramm konnte nicht geladen werden.",
     canvas.width / 2,
     canvas.height / 2
   );
@@ -164,7 +168,10 @@ const createChart = ({ ctx, labels, timeSerie, data, unitNames }) => {
  * @param {array} data - data to get min/max date.
  * @param {number} tsId - the timeseries id.
  */
-const updatePeriodLabel = (data, tsId) => {
+const updatePeriodLabel = ({ data, tsId, period } = {}) => {
+  if (!data || !tsId || !period) {
+    return;
+  }
   if (Array.isArray(data)) {
     let minValue, maxValue;
     let label = document.getElementById(`messzeitraum-${tsId}`);
@@ -184,7 +191,15 @@ const updatePeriodLabel = (data, tsId) => {
     });
     const labelText = document.createElement("span");
     labelText.style.fontWeight = "normal";
-    labelText.innerHTML = `(${minValue.toLocaleDateString()} - ${maxValue.toLocaleDateString()})`;
+    if (minValue && maxValue) {
+      labelText.innerHTML = `(${minValue.toLocaleDateString(
+        locale
+      )} bis ${maxValue.toLocaleDateString(locale)})`;
+    } else {
+      labelText.classList.add("text-danger");
+      labelText.innerHTML = `<br />${noDataPeriodLabels[period]}`;
+    }
+
     label.append(labelText);
   }
 };

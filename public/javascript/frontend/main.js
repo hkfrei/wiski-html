@@ -5,15 +5,8 @@ import {
   createChart,
   updatePeriodLabel,
 } from "./modules/util_module.mjs";
-const charts = {};
 
-const maximizeLink = document.querySelector(".maximize-link");
-if (
-  maximizeLink &&
-  window.location.host.indexOf("wiski-html-h2eptfuxza-ew.a.run.app") !== -1
-) {
-  maximizeLink.innerHTML = "";
-}
+const charts = {};
 
 const timeRadios = document.querySelectorAll(".graph-time-radio");
 timeRadios.forEach((radio) =>
@@ -25,6 +18,21 @@ timeRadios.forEach((radio) =>
     changeGraphDate({ tsId, period, chart, url });
   })
 );
+
+/* send messages to the parent window when the size of the
+ * accordion changes
+ */
+const container = document.querySelector(".info-container");
+const accordionHeaders = document.querySelectorAll(".btn-link");
+accordionHeaders.forEach((header) => {
+  header.addEventListener("click", (e) => {
+    window.setTimeout(function () {
+      const parent = window.parent;
+      parent.postMessage({ height: container.offsetHeight }, "*");
+    }, 450); // wait for the animation to end
+  });
+});
+
 const graphContainers = document.querySelectorAll(".graph-container");
 for (const node of graphContainers) {
   const tsId = node.dataset.tsid;
@@ -47,7 +55,7 @@ for (const node of graphContainers) {
       } catch (error) {
         return;
       }
-      if (Array.isArray(data) && data.length > 0) {
+      if (Array.isArray(data)) {
         charts[tsId] = createChart({
           ctx,
           timeSerie,
@@ -56,7 +64,13 @@ for (const node of graphContainers) {
           data,
         });
       }
-      updatePeriodLabel(charts[tsId].data.datasets[0].data, tsId);
+      if (charts[tsId]) {
+        updatePeriodLabel({
+          data: charts[tsId].data.datasets[0].data,
+          tsId,
+          period: "pt24h",
+        });
+      }
     })
-    .catch((error) => alert(error));
+    .catch((error) => console.error(error));
 }

@@ -1,5 +1,31 @@
 var fetch = require("node-fetch");
 var env = require("./ENV.js");
+
+/*
+ * add the correct labels to the latest measurement
+ * @param {object} measurement - measurement object returned from kiwis
+ * @returns {object} result - measurement object with correct unit labels in data.
+ */
+const labelLatestMeasurement = (measurement) => {
+  if (!measurement) {
+    return null;
+  }
+  const result = { ...measurement }; // copy object
+  const data = result.data[0];
+  const { parametertype_name, ts_unitsymbol } = result;
+  const unit_name = env.unit_names[ts_unitsymbol]
+    ? env.unit_names[ts_unitsymbol]
+    : ts_unitsymbol;
+  if (parametertype_name === "Grundwasserspiegel") {
+    result.value = `Abstich: ${data[1]} ${ts_unitsymbol}`;
+  } else {
+    result.value = `${data[1]} ${unit_name}`;
+  }
+  if (data[2]) {
+    result.absoluteValue = `${data[2]} ${unit_name}`;
+  }
+  return result;
+};
 const waterUtil = {
   getWaterStationInfo: async (stationid) => {
     // basic station information
@@ -13,10 +39,13 @@ const waterUtil = {
     );
     let stationNumber = "";
     const firstStation = filtered_stations[0];
-    // get the numeric part of the station number to be able to create the link to the station website
-    for (var i = 0; i < firstStation.station_no.length; i++) {
-      if (Number.isInteger(parseInt(firstStation.station_no[i]))) {
-        stationNumber += firstStation.station_no[i];
+    if (firstStation.station_no.toLowerCase().indexOf("ch") !== -1) {
+      // if it is a ch station get the numeric part of the station number
+      // to be able to create the link to the station website.
+      for (var i = 0; i < firstStation.station_no.length; i++) {
+        if (Number.isInteger(parseInt(firstStation.station_no[i]))) {
+          stationNumber += firstStation.station_no[i];
+        }
       }
     }
     // get the correct timeseries group for this station
@@ -34,7 +63,8 @@ const waterUtil = {
         `${env.kiwis_host}${env.latest_measurement}&ts_id=${serie.ts_id}`
       );
       const latest_measurement = await latest_measurement_response.json();
-      latest_measurements.push(latest_measurement[0]);
+      // create the correct unit labels
+      latest_measurements.push(labelLatestMeasurement(latest_measurement[0]));
     }
 
     // extract the measure parameters (names) for this station
@@ -52,6 +82,7 @@ const waterUtil = {
       measure_params,
       time_series,
       unit_names: env.unit_names,
+      measure_periods: env.measure_periods,
       service_host: env.service_host,
     };
   },

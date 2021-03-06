@@ -41,7 +41,7 @@ docker run -d -p 8080:8080 gcr.io/geourjs/wiski-html
 Deploying your containerized app to Cloud Run is done using the following command:
 
 ```
-gcloud run deploy wiski-html   --image gcr.io/geourjs/wiski-html   --platform managed   --region europe-west6   --allow-unauthenticated
+gcloud run deploy wiski-html   --image gcr.io/geourjs/wiski-html   --platform managed   --region europe-west6   --allow-unauthenticated --set-env-vars NODE_ICU_DATA=node_modules/full-icu
 ```
 
 ### SERVICE URL

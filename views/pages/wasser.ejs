@@ -46,12 +46,13 @@
             %>
             <%-include('../partials/station-info-element',{key:"Stationshöhe",value:`${station.station_elevation}
             m.ü.Meer`}); %>
-            <%-include('../partials/station-info-element',{key:"Gewässer",value:station.WTO_OBJECT});
-            %>
+            <%-include('../partials/station-info-element',{key:"Gewässer",value:station.WTO_OBJECT
+            || "Unbekannt"}); %>
             <%-include('../partials/station-info-element',{key:"Standort",value:station.site_name});
             %>
-            <%-include('../partials/station-info-element',{key:"Einzugsgebiet",value:station.CATCHMENT_SIZE.substring(8)});
-            %> <%-include('../partials/station-info-element',{key:`Koordinaten
+            <%-include('../partials/station-info-element',{key:"Einzugsgebiet",value:station.CATCHMENT_SIZE.substring(8)
+            || "Unbekannt"}); %>
+            <%-include('../partials/station-info-element',{key:`Koordinaten
             (LV95)`,value:`${parseInt(station.station_local_x).toLocaleString("de-CH")}
             / ${parseInt(station.station_local_y).toLocaleString("de-CH")}`});
             %>
@@ -125,7 +126,7 @@
             <h6>Es sind keine Diagramme verfügbar.&nbsp;🤔</h6>
             <%} if(time_series.length > 0){time_series.forEach((graph,index) =>
             { %>
-            <%-include('../partials/graph',{graph,station,index,service_host});%>
+            <%-include('../partials/graph',{graph,station,index,service_host,measure_periods});%>
             <% }) }%>
           </div>
         </div>

@@ -52,11 +52,13 @@ app.get("/", function (req, res) {
 
 // wasser page
 app.get("/wasser", async (req, res, next) => {
+  res.set("Cache-Control", "public, max-age=300, s-maxage=600s");
   const { stationid } = req.query;
   if (!stationid) {
     res.render("pages/index", {
       endpoints,
     });
+    return;
   }
   try {
     const station = await waterUtil.getWaterStationInfo(stationid);
@@ -65,9 +67,10 @@ app.get("/wasser", async (req, res, next) => {
       time_series: station.time_series,
       measure_params: station.measure_params,
       unit_names: station.unit_names,
+      measure_periods: station.measure_periods,
       service_host: station.service_host,
     });
-    console.log(station);
+    //console.log(station);
   } catch (error) {
     return next(error);
   }

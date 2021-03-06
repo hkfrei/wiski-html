@@ -16,6 +16,7 @@ module.exports = {
   unit_names: {
     m: "m.ü.Meer",
     cumec: "m3/s",
+    cbar: "centibar",
   },
   ts_group_id: {
     Boden: 47043,

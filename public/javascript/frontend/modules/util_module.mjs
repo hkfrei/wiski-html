@@ -36,12 +36,16 @@ const changeGraphDate = ({ tsId, period, chart, url } = {}) => {
         chart.data.labels = labels;
         chart.data.datasets[0].data = data;
         chart.downsample(threshold);
+        if (timeSeries[0].parametertype_name === "Bodensaugspannung") {
+          const xMin = data[0].x;
+          const xMax = data[data.length - 1].x;
+          upateBodenAnnotations({ chart, xMin, xMax });
+        }
         chart.update();
         updatePeriodLabel({ data: chart.data.datasets[0].data, tsId, period });
         window.requestAnimationFrame(() => {
           wait.style.visibility = "hidden";
         });
-
         return chart;
       } catch (error) {
         return;
@@ -114,7 +118,7 @@ const displayDiagramLoadError = (canvas) => {
  * @returns {object} chart - chart.js instance.
  */
 const createChart = ({ ctx, labels, timeSerie, data, unitNames }) => {
-  return new Chart(ctx, {
+  const chart = new Chart(ctx, {
     type: "line",
     data: {
       labels,
@@ -159,6 +163,23 @@ const createChart = ({ ctx, labels, timeSerie, data, unitNames }) => {
       showLines: true,
     },
   });
+  if (timeSerie.parametertype_name === "Bodensaugspannung") {
+    chart.options.scales.yAxes = [
+      {
+        ticks: {
+          suggestedMin: 0,
+          suggestedMax: 100,
+        },
+        scaleLabel: {
+          display: true,
+          labelString: `[${unitNames[timeSerie.ts_unitsymbol]}]`,
+        },
+      },
+    ];
+    // use the annotation plugin to draw colored boxes with the "feuchtigkeit" categories.
+    chart.options.annotation = getBodenAnnotations(data);
+  }
+  return chart;
 };
 
 /*
@@ -200,6 +221,88 @@ const updatePeriodLabel = ({ data, tsId, period } = {}) => {
 
     label.append(labelText);
   }
+};
+
+/*
+ * update the width of the horizontal boxes in the saugspannung diagrams
+ * @param {array} data - the diagram data
+ * @returns void.
+ */
+const getBodenAnnotations = (data) => {
+  const xMin = data[0].x;
+  const xMax = data[data.length - 1].x;
+  return {
+    annotations: [
+      {
+        type: "box",
+        // optional drawTime to control layering, overrides global drawTime setting
+        drawTime: "beforeDatasetsDraw",
+        // optional annotation ID (must be unique)
+        id: "nass",
+        // ID of the X scale to bind onto
+        xScaleID: "x-axis-0",
+        // ID of the Y scale to bind onto
+        yScaleID: "y-axis-0",
+        // Left edge of the box. in units along the x axis
+        xMin,
+        // Right edge of the box
+        xMax,
+        // Top edge of the box in units along the y axis
+        yMax: 6,
+        // Bottom edge of the box
+        yMin: 0,
+        backgroundColor: "rgba(255,0,0,0.5)",
+      },
+      {
+        type: "box",
+        drawTime: "beforeDatasetsDraw",
+        id: "sehr feucht",
+        xScaleID: "x-axis-0",
+        yScaleID: "y-axis-0",
+        xMin,
+        xMax,
+        yMax: 10,
+        yMin: 6,
+        backgroundColor: "rgba(255,127,0,0.5)",
+      },
+      {
+        type: "box",
+        drawTime: "beforeDatasetsDraw",
+        id: "feucht",
+        xScaleID: "x-axis-0",
+        yScaleID: "y-axis-0",
+        xMin,
+        xMax,
+        yMax: 20,
+        yMin: 10,
+        backgroundColor: "rgba(255,193,37,0.5)",
+      },
+      {
+        type: "box",
+        drawTime: "beforeDatasetsDraw",
+        id: "trocken",
+        xScaleID: "x-axis-0",
+        yScaleID: "y-axis-0",
+        xMin,
+        xMax,
+        yMax: 100,
+        yMin: 20,
+        backgroundColor: "rgba(34,139,34,0.5)",
+      },
+    ],
+  };
+};
+
+const upateBodenAnnotations = ({ chart, xMin, xMax }) => {
+  if (!chart || !xMin || !xMax) {
+    return;
+  }
+  const elements = chart.annotation.elements;
+  const elementKeys = Object.keys(elements);
+  elementKeys.forEach((key) => {
+    elements[key].options.xMin = xMin;
+    elements[key].options.xMax = xMax;
+  });
 };
 
 export {

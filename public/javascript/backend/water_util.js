@@ -11,18 +11,20 @@ const labelLatestMeasurement = (measurement) => {
     return null;
   }
   const result = { ...measurement }; // copy object
-  const data = result.data[0];
-  const { parametertype_name, ts_unitsymbol } = result;
-  const unit_name = env.unit_names[ts_unitsymbol]
-    ? env.unit_names[ts_unitsymbol]
-    : ts_unitsymbol;
-  if (parametertype_name === "Grundwasserspiegel") {
-    result.value = `Abstich: ${data[1]} ${ts_unitsymbol}`;
-  } else {
-    result.value = `${data[1]} ${unit_name}`;
-  }
-  if (data[2]) {
-    result.absoluteValue = `${data[2]} ${unit_name}`;
+  if (result.data.length > 0) {
+    const data = result.data[0];
+    const { parametertype_name, ts_unitsymbol } = result;
+    const unit_name = env.unit_names[ts_unitsymbol]
+      ? env.unit_names[ts_unitsymbol]
+      : ts_unitsymbol;
+    if (parametertype_name === "Grundwasserspiegel") {
+      result.value = `Abstich: ${data[1]} ${ts_unitsymbol}`;
+    } else {
+      result.value = `${data[1]} ${unit_name}`;
+    }
+    if (data[2]) {
+      result.absoluteValue = `${data[2]} ${unit_name}`;
+    }
   }
   return result;
 };

@@ -109,7 +109,6 @@ dist
 .vscode-test
 
 yarn.lock
-package-lock.json
 .DS_Store
 
 # yarn v2

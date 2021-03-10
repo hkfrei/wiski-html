@@ -64,13 +64,15 @@ app.get("/wasser", async (req, res, next) => {
     const station = await waterUtil.getWaterStationInfo(stationid);
     res.render("pages/wasser", {
       station: station.info,
+      docs: station.docs,
       time_series: station.time_series,
       measure_params: station.measure_params,
       unit_names: station.unit_names,
       measure_periods: station.measure_periods,
       service_host: station.service_host,
+      documents_host: station.documents_host,
     });
-    //console.log(station);
+    console.log(station);
   } catch (error) {
     return next(error);
   }

@@ -50,6 +50,17 @@ const waterUtil = {
         }
       }
     }
+    // get external documents for the station
+    let docs;
+    try {
+      const stationNr = firstStation.station_no;
+      const docs_response = await fetch(
+        `${env.documents_host}/UR_Hydrometrie/stations.php/${stationNr}`
+      );
+      docs = await docs_response.json();
+    } catch (error) {
+      docs = error;
+    }
     // get the correct timeseries group for this station
     const ts_group_id = env.ts_group_id[firstStation.object_type];
     // get possible diagrams/timeseries this station
@@ -82,11 +93,13 @@ const waterUtil = {
         diagram_data: env.diagram_data,
         latest_measurements,
       },
+      docs,
       measure_params,
       time_series,
       unit_names: env.unit_names,
       measure_periods: env.measure_periods,
       service_host: env.service_host,
+      documents_host: env.documents_host,
     };
   },
 };

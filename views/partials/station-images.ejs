@@ -1,0 +1,46 @@
+<div>
+  <% if(Array.isArray(docs) && docs.length === 0){ %>
+    <h6 class="documents__title">Es sind keine Bilder verfügbar.&nbsp;🤔</h6>
+  <% } else {
+    if(docs.pictures){ %>
+      <h6>Stationsfoto:</h6>
+    <% docs.bilder.forEach(bild => { %>
+        <div>
+          <img src="<%= documents_host%><%= bild %>" alt="stationsbild" />
+        </div>
+  <% }) 
+    } 
+    if(docs.graphs){ %>
+      <h6 class="documents__title">Diagramme:</h6>
+    <% docs.graphs.forEach(graph => { %> 
+        <div>
+          <img src="<%= documents_host%><%= graph %>" alt="Diagramm" />
+        </div>
+  <% }) 
+    } 
+    if(docs.profil){ %>
+      <h6 class="documents__title">Bohrprofil:</h6>
+      <div>
+        <img src="<%= documents_host%><%= docs.profil %>" alt="Bohrprofil" />
+      </div>
+    <% }
+    if(docs.catchment){ %>
+      <h6 class="documents__title">Einzugsgebiet:</h6>
+      <div>
+        <img src="<%= documents_host%><%= docs.catchment %>" alt="Einzugsgebiet" />
+      </div>
+    <% }  
+    if(docs.map){ %>
+      <h6 class="documents__title">Karte:</h6>
+      <div>
+        <img src="<%= documents_host%><%= docs.map %>" alt="Karte" />
+      </div>
+    <% }
+    if(docs.orthophoto){ %>
+      <h6 class="documents__title">Orthofoto:</h6>
+      <div>
+        <img src="<%= documents_host%><%= docs.orthophoto %>" alt="Orthofoto" />
+      </div>
+    <% } 
+  } %>
+</div>  

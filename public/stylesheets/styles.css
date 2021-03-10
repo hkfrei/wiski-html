@@ -15,6 +15,13 @@
   font-weight: 600;
 }
 
+.documents__title {
+  padding-top: 16px;
+}
+.documents__title:first-of-type {
+  padding-top: 0;
+}
+
 .card {
   border: 1px solid #b8daff;
 }

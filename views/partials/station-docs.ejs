@@ -1,0 +1,35 @@
+<div>
+  <% if(Array.isArray(docs) && docs.length === 0){ %>
+    <h6 class="documents__title">Es sind keine Dokumente verfügbar.&nbsp;🤔</h6>
+  <% } else {
+    if(docs.masterdata){ %>
+      <h6>Stammdatenblatt:</h6>
+    <% docs.masterdata.forEach(stammdatenblatt => { 
+        const split = stammdatenblatt.split("/");
+        const pdf_name = split[split.length - 1] %>
+        <div>
+          <img src="images/file-richtext.svg" alt="stammdatenblatt" />
+          <a href="<%= documents_host%><%= stammdatenblatt %>" target="_blank"><%= pdf_name %></a>
+        </div>
+  <% }) 
+    } 
+    if(docs.yearbookValidated){ %>
+      <h6 class="documents__title">Letzte validierte Jahrbücher:</h6>
+    <% docs.yearbookValidated.forEach(validated => { 
+        const split = validated.split("/");
+        const pdf_name = split[split.length - 1] %>
+        <div>
+          <img src="images/file-text.svg" alt="validiertes jahrbuch" />
+          <a href="<%= documents_host%><%= validated %>" target="_blank"><%= pdf_name %></a>
+        </div>
+  <% }) 
+    } 
+    if(docs.yearbookArchive){ %>
+      <h6 class="documents__title">Ältere Jahrbücher:</h6>
+      <div>
+        <img src="images/file-text.svg" alt="validiertes jahrbuch" />
+        <a href="<%= documents_host%><%= docs.yearbookArchive %>" target="_blank">Archiv</a>
+      </div>
+    <% } 
+  } %>
+</div>  

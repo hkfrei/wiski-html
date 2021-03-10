@@ -158,7 +158,7 @@
           data-parent="#accordionExample"
         >
           <div class="card-body">
-            <h6>Es sind keine Dokumente verfügbar.&nbsp;🤔</h6>
+            <%-include('../partials/station-docs',{docs, documents_host});%>
           </div>
         </div>
       </div>
@@ -189,7 +189,7 @@
           data-parent="#accordionExample"
         >
           <div class="card-body">
-            <h6>Es sind keine Bilder verfügbar.&nbsp;🤔</h6>
+            <%-include('../partials/station-images',{docs, documents_host});%>
           </div>
         </div>
       </div>

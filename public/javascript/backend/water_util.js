@@ -53,9 +53,8 @@ const waterUtil = {
     // get external documents for the station
     let docs;
     try {
-      const stationNr = firstStation.station_no;
       const docs_response = await fetch(
-        `${env.documents_host}/UR_Hydrometrie/stations.php/${stationNr}`
+        `${env.documents_host}/UR_Hydrometrie/stations.php/${firstStation.station_no}`
       );
       docs = await docs_response.json();
     } catch (error) {

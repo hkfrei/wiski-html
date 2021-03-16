@@ -27,8 +27,7 @@ const accordionHeaders = document.querySelectorAll(".btn-link");
 accordionHeaders.forEach((header) => {
   header.addEventListener("click", (e) => {
     window.setTimeout(function () {
-      const parent = window.parent;
-      parent.postMessage({ height: container.offsetHeight }, "*");
+      sendHeightStatus(container);
     }, 450); // wait for the animation to end
   });
 });
@@ -74,3 +73,18 @@ for (const node of graphContainers) {
     })
     .catch((error) => console.error(error));
 }
+
+/*
+ * post a message to the parent window with the
+ * height of this site in order it can update it's
+ * iframe height.
+ */
+const sendHeightStatus = (container) => {
+  window.parent.postMessage({ height: container.offsetHeight }, "*");
+};
+/* on the first page load, send the height
+ * of the iframe to the reqesting app.
+ */
+window.requestAnimationFrame(() => {
+  window.requestAnimationFrame(() => sendHeightStatus(container));
+});

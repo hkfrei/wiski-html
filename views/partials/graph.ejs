@@ -16,7 +16,7 @@
         name="time-options-<%= graph.ts_id %>"
         id="radio-<%= key %>-<%= graph.ts_id %>"
         value="<%= key %>"
-        data-diagramdataurl="<%= station.kiwis_host %><%=station.diagram_data %>" <%= checked %>
+        data-diagramdataurl="<%= station.kiwis_host %><%=station.diagram_data %>&format=dajson" <%= checked %>
       />
       <label class="form-check-label" for="radio-<%= key %>-<%= graph.ts_id %>"
         ><%= measure_periods[key] %></label
@@ -38,7 +38,7 @@
   <canvas
     id="graph-container-<%= graph.ts_id %>"
     data-tsid="<%= graph.ts_id %>"
-    data-diagramdataurl="<%= station.kiwis_host %><%=station.diagram_data %>"
+    data-diagramdataurl="<%= station.kiwis_host %><%=station.diagram_data %>&format=dajson"
     data-unitnames="<%= JSON.stringify(unit_names) %>"
     class="graph-container"
     width="500"

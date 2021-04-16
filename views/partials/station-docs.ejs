@@ -1,8 +1,5 @@
 <div>
-  <% if(Array.isArray(docs) && docs.length === 0){ %>
-    <h6 class="documents__title">Es sind keine Dokumente verfügbar.&nbsp;🤔</h6>
-  <% } else {
-    if(docs.masterdata){ %>
+  <% if(docs.masterdata){ %>
       <h6>Stammdatenblatt:</h6>
     <% docs.masterdata.forEach(stammdatenblatt => { 
         const split = stammdatenblatt.split("/");
@@ -30,6 +27,45 @@
         <img src="images/file-text.svg" alt="validiertes jahrbuch" />
         <a href="<%= documents_host%><%= docs.yearbookArchive %>" target="_blank">Archiv</a>
       </div>
-    <% } 
-  } %>
+    <% } %> 
+  <section>
+    <h6 class="document__title" style="margin-bottom: 24px;">Download von Zeitreihen im .xlsx Format:
+      <small class="badge badge-warning mt-2">Achtung(!) Daten teilweise nicht validiert!</small>
+    </h6>
+    <form">
+      <div class="form-row">
+        <div class="form-group col-md-4">
+          <label for="downloadParameter">Parameter</label>
+          <select class="form-control mb-2" aria-label="auswahl parameter" id="downloadParameter">
+            <% for(serie of time_series) {%> 
+              <option value="<%=serie.ts_id %>"><%= serie.stationparameter_name %></option>
+            <% } %>
+          </select>
+        </div>
+        <div class="form-group col-md-4">
+        <label for="downloadTimerange">Zeitraum</label>
+          <select class="form-control mb-2" aria-label="auswahl zeitraum" id="downloadTimerange">
+            <option value="p7d">1 Woche</option>
+            <option value="p1m">1 Monat</option>
+            <option value="p1y">1 Jahr</option>
+            <option value="p5y">5 Jahre</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-4">
+          <button 
+            class="btn btn-primary" 
+            type="button" 
+            id="downloadTimeSeriesButton" 
+            data-requesturl="<%=station.kiwis_host %><%=station.diagram_data %>&format=xlsx">
+            Download...
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" id="download__spinner"></span>
+          </button>
+        </div>
+      </div>
+    </form>
+    <div>
+    </div>
+  </section>
 </div>  

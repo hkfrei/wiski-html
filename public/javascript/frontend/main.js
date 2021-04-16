@@ -19,6 +19,50 @@ timeRadios.forEach((radio) =>
   })
 );
 
+/*
+ * logic for downloading time series data
+ */
+const downloadTimeRange = document.getElementById("downloadTimerange");
+const downloadParameter = document.getElementById("downloadParameter");
+const downloadButton = document.getElementById("downloadTimeSeriesButton");
+const downloadSpinner = document.getElementById("download__spinner");
+
+const downloadTimeSeries = async () => {
+  downloadSpinner.style.visibility = "visible";
+  const ts_id = downloadParameter.value;
+  const period = downloadTimeRange.value;
+  const basicUrl = downloadButton.dataset.requesturl;
+  const url = `${basicUrl}&ts_id=${ts_id}&period=${period}`;
+  try {
+    // Step 1: start the fetch and obtain a reader
+    let response = await fetch(url);
+    const reader = response.body.getReader();
+    // Step 3: read the data
+    let chunks = []; // array of received binary chunks (comprises the body)
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) {
+        break;
+      }
+      chunks.push(value);
+    }
+    const blob = new Blob(chunks);
+    const objUrl = window.URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.style.display = "none";
+    a.href = objUrl;
+    a.download = `time_series_${period}_${new Date().toLocaleDateString()}.xlsx`;
+    document.body.appendChild(a);
+    a.click();
+    window.URL.revokeObjectURL(objUrl);
+    downloadSpinner.style.visibility = "hidden";
+  } catch (error) {
+    alert(error);
+    downloadSpinner.style.visibility = "hidden";
+  }
+};
+downloadButton.addEventListener("click", downloadTimeSeries);
+
 /* send messages to the parent window when the size of the
  * accordion changes
  */

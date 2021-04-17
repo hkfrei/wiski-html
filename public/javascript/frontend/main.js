@@ -20,7 +20,7 @@ timeRadios.forEach((radio) =>
 );
 
 /*
- * logic for downloading time series data
+ * logic for downloading time series data in excel format.
  */
 const downloadTimeRange = document.getElementById("downloadTimerange");
 const downloadParameter = document.getElementById("downloadParameter");

@@ -76,6 +76,9 @@ accordionHeaders.forEach((header) => {
   });
 });
 
+/*
+ * load the diagrams with the initial period of 24h.
+ */
 const graphContainers = document.querySelectorAll(".graph-container");
 for (const node of graphContainers) {
   const tsId = node.dataset.tsid;

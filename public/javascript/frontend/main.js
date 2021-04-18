@@ -86,44 +86,46 @@ for (const node of graphContainers) {
   const unitNames = JSON.parse(node.dataset.unitnames);
   // fetch data for the diagrams
   try {
-    const timeSeries = await graphDataHelper.getGraphData({
-      url,
-      tsId,
-      period: "pt24h",
-    });
-    const ctx = node.getContext("2d");
-    const timeSerie = timeSeries[0];
-    let labels = [];
-    let data = [];
-
-    const graphData = await prepStationData({
-      data: timeSerie.data,
-      canvas: node,
-    });
-    labels = graphData.labels;
-    data = graphData.data;
-
-    if (Array.isArray(data)) {
-      charts[tsId] = createChart({
-        ctx,
-        timeSerie,
-        labels,
-        unitNames,
-        data,
-      });
-    }
-    if (charts[tsId]) {
-      updatePeriodLabel({
-        data: charts[tsId].data.datasets[0].data,
+    (async function () {
+      const timeSeries = await graphDataHelper.getGraphData({
+        url,
         tsId,
         period: "pt24h",
       });
-    }
+      const ctx = node.getContext("2d");
+      const timeSerie = timeSeries[0];
+      let labels = [];
+      let data = [];
+
+      const graphData = await prepStationData({
+        data: timeSerie.data,
+        canvas: node,
+      });
+      labels = graphData.labels;
+      data = graphData.data;
+
+      if (Array.isArray(data)) {
+        charts[tsId] = createChart({
+          ctx,
+          timeSerie,
+          labels,
+          unitNames,
+          data,
+        });
+      }
+      if (charts[tsId]) {
+        updatePeriodLabel({
+          data: charts[tsId].data.datasets[0].data,
+          tsId,
+          period: "pt24h",
+        });
+      }
+    })();
   } catch (error) {
     alert("Es gab einen Fehler beim Laden der Diagramme: " + error);
   }
 }
-
+// get the yearly range for the time series to normalize the axis across periods.
 /*
  * post a message to the parent window with the
  * height of this site in order it can update it's

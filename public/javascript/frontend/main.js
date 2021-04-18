@@ -89,7 +89,7 @@ for (const node of graphContainers) {
     const timeSeries = await graphDataHelper.getGraphData({
       url,
       tsId,
-      period: "PT24H",
+      period: "pt24h",
     });
     const ctx = node.getContext("2d");
     const timeSerie = timeSeries[0];

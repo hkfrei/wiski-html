@@ -2,6 +2,11 @@ importScripts("https://unpkg.com/comlink/dist/umd/comlink.js");
 
 const graphDataHelper = {
   /*
+   * a cache for downloaded time series
+   */
+  cache: {},
+
+  /*
    * gets graph data for a certain timeseries and period
    * @param {object} params - function parameter object.
    * @param {string} params.url - base url to fetch graph data.
@@ -10,9 +15,17 @@ const graphDataHelper = {
    * @returns {Promise} - a promise wich fullfills with a timeseries including the data.
    */
   getGraphData: async function ({ url, tsId, period } = {}) {
+    // have a look at he cache first...
+    if (this.cache[tsId] && this.cache[tsId][period]) {
+      return this.cache[tsId][period];
+    }
     try {
+      // use object spread to make sure allready cached values do not get lost.
+      this.cache[tsId] = { ...this.cache[tsId] };
       const response = await fetch(`${url}&ts_id=${tsId}&period=${period}`);
       const timeSeries = await response.json();
+      // put it to the cache for later usage.
+      this.cache[tsId][period] = timeSeries;
       return timeSeries;
     } catch (error) {
       return error;

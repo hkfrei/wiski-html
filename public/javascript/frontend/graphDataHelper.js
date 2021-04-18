@@ -18,6 +18,22 @@ const graphDataHelper = {
       return error;
     }
   },
+
+  /*
+   * prepares kiwis timeseries data in order to be readable by chart.js.
+   * @param {object} params - function parameter object.
+   * @param {array} params.data - time-series data from kiwis.
+   * @returns {object} result - { labels:['the labels'], data:['chart.js optimized data'] }.
+   */
+  prepStationData: function ({ data } = {}) {
+    const result = { labels: [], data: [] };
+    data.forEach((element) => {
+      const date = new Date(element[0]);
+      result.labels.push(date);
+      result.data.push({ x: date, y: element[1] });
+    });
+    return result;
+  },
 };
 
 Comlink.expose(graphDataHelper);

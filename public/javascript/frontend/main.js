@@ -96,7 +96,7 @@ for (const node of graphContainers) {
     let labels = [];
     let data = [];
 
-    const graphData = prepStationData({
+    const graphData = await prepStationData({
       data: timeSerie.data,
       canvas: node,
     });

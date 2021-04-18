@@ -36,7 +36,7 @@ const changeGraphDate = async ({ tsId, period, chart, url } = {}) => {
       tsId,
       period,
     });
-    const { data, labels } = prepStationData({
+    const { data, labels } = await prepStationData({
       data: timeSeries[0].data,
       canvas: chart.canvas,
     });
@@ -67,16 +67,11 @@ const changeGraphDate = async ({ tsId, period, chart, url } = {}) => {
  * @param {<canvas>} params.canvas - html canvas element.
  * @returns {object} result - { labels:['the labels'], data:['chart.js optimized data'] }.
  */
-const prepStationData = ({ data, canvas } = {}) => {
+const prepStationData = async ({ data, canvas } = {}) => {
   if (!data || Array.isArray(data) === false || data.length === 0) {
     displayDiagramLoadError(canvas);
   }
-  const result = { labels: [], data: [] };
-  data.forEach((element) => {
-    const date = new Date(element[0]);
-    result.labels.push(date);
-    result.data.push({ x: date, y: element[1] });
-  });
+  const result = await graphDataHelper.prepStationData({ data });
   return result;
 };
 

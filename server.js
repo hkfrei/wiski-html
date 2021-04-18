@@ -18,6 +18,7 @@ app.use(
         "https://cdn.jsdelivr.net",
         "https://cdnjs.cloudflare.com",
         "https://code.jquery.com",
+        "https://unpkg.com",
       ],
       styleSrc: [
         "'self'",

@@ -1,3 +1,4 @@
+import * as Comlink from "https://unpkg.com/comlink/dist/esm/comlink.mjs";
 const noDataPeriodLabels = {
   pt24h: "Innerhalb der letzten 24 Std. gibt es keine Daten.",
   pt48h: "Innerhalb der letzten 48 Std. gibt es keine Daten.",
@@ -6,6 +7,9 @@ const noDataPeriodLabels = {
   p1y: "Innerhalb des letzten Jahres gibt es keine Daten.",
 };
 const locale = "de-CH";
+
+const graphDataWorker = new Worker("javascript/frontend/graphDataHelper.js");
+const graphDataHelper = Comlink.wrap(graphDataWorker);
 /*
  * change the time-range of data a graph displays.
  * @param {object} params - function parameter object.
@@ -15,7 +19,7 @@ const locale = "de-CH";
  * @param {string} params.url - url to request graph data from kiwis.
  * @returns {Promise} - chart.js object.
  */
-const changeGraphDate = ({ tsId, period, chart, url } = {}) => {
+const changeGraphDate = async ({ tsId, period, chart, url } = {}) => {
   if (!tsId || !period) {
     return;
   }
@@ -26,51 +30,34 @@ const changeGraphDate = ({ tsId, period, chart, url } = {}) => {
       wait.style.visibility = "visible";
     });
   }
-  getGraphData({ url, tsId, period })
-    .then((timeSeries) => {
-      try {
-        const { data, labels } = prepStationData({
-          data: timeSeries[0].data,
-          canvas: chart.canvas,
-        });
-        chart.data.labels = labels;
-        chart.data.datasets[0].data = data;
-        chart.downsample(threshold);
-        if (timeSeries[0].parametertype_name === "Bodensaugspannung") {
-          const xMin = data[0].x;
-          const xMax = data[data.length - 1].x;
-          upateBodenAnnotations({ chart, xMin, xMax });
-        }
-        chart.update();
-        updatePeriodLabel({ data: chart.data.datasets[0].data, tsId, period });
-        window.requestAnimationFrame(() => {
-          wait.style.visibility = "hidden";
-        });
-        return chart;
-      } catch (error) {
-        return;
-      }
-    })
-    .catch((error) => console.error(error));
-};
-
-/*
- * gets graph data for a certain timeseries and period
- * @param {object} params - function parameter object.
- * @param {string} params.url - base url to fetch graph data.
- * @param {number} params.tsId - the timeseries id.
- * @param {string} params.period - the period to request the data for e.g. "PT24H".
- * @returns {Promise} - a promise wich fullfills with a timeseries including the data.
- */
-const getGraphData = ({ url, tsId, period } = {}) => {
-  if (!url || !tsId || !period) {
-    return Promise.reject(
-      "Diagrammdaten konnten nicht geladen werden. Bitte Funktionsparameter überprüfen."
-    );
+  try {
+    const timeSeries = await graphDataHelper.getGraphData({
+      url,
+      tsId,
+      period,
+    });
+    const { data, labels } = prepStationData({
+      data: timeSeries[0].data,
+      canvas: chart.canvas,
+    });
+    chart.data.labels = labels;
+    chart.data.datasets[0].data = data;
+    chart.downsample(threshold);
+    if (timeSeries[0].parametertype_name === "Bodensaugspannung") {
+      const xMin = data[0].x;
+      const xMax = data[data.length - 1].x;
+      upateBodenAnnotations({ chart, xMin, xMax });
+    }
+    chart.update();
+    updatePeriodLabel({ data: chart.data.datasets[0].data, tsId, period });
+    window.requestAnimationFrame(() => {
+      wait.style.visibility = "hidden";
+    });
+    return chart;
+  } catch (error) {
+    console.error(error);
+    alert("Fehler beim Wechseln des Datums: " + error);
   }
-  return fetch(`${url}&ts_id=${tsId}&period=${period}`)
-    .then((response) => response.json())
-    .then((timeSeries) => timeSeries);
 };
 
 /*
@@ -308,8 +295,8 @@ const upateBodenAnnotations = ({ chart, xMin, xMax }) => {
 };
 
 export {
+  graphDataHelper,
   changeGraphDate,
-  getGraphData,
   prepStationData,
   displayDiagramLoadError,
   createChart,

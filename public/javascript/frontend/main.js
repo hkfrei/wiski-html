@@ -1,6 +1,6 @@
 import {
   changeGraphDate,
-  getGraphData,
+  graphDataHelper,
   prepStationData,
   createChart,
   updatePeriodLabel,
@@ -84,41 +84,44 @@ for (const node of graphContainers) {
   const tsId = node.dataset.tsid;
   const url = node.dataset.diagramdataurl;
   const unitNames = JSON.parse(node.dataset.unitnames);
-  // json data for diagrams
-  getGraphData({ url, tsId, period: "PT24H" })
-    .then((timeSeries) => {
-      const ctx = node.getContext("2d");
-      const timeSerie = timeSeries[0];
-      let labels = [];
-      let data = [];
-      try {
-        const graphData = prepStationData({
-          data: timeSerie.data,
-          canvas: node,
-        });
-        labels = graphData.labels;
-        data = graphData.data;
-      } catch (error) {
-        return;
-      }
-      if (Array.isArray(data)) {
-        charts[tsId] = createChart({
-          ctx,
-          timeSerie,
-          labels,
-          unitNames,
-          data,
-        });
-      }
-      if (charts[tsId]) {
-        updatePeriodLabel({
-          data: charts[tsId].data.datasets[0].data,
-          tsId,
-          period: "pt24h",
-        });
-      }
-    })
-    .catch((error) => console.error(error));
+  // fetch data for the diagrams
+  try {
+    const timeSeries = await graphDataHelper.getGraphData({
+      url,
+      tsId,
+      period: "PT24H",
+    });
+    const ctx = node.getContext("2d");
+    const timeSerie = timeSeries[0];
+    let labels = [];
+    let data = [];
+
+    const graphData = prepStationData({
+      data: timeSerie.data,
+      canvas: node,
+    });
+    labels = graphData.labels;
+    data = graphData.data;
+
+    if (Array.isArray(data)) {
+      charts[tsId] = createChart({
+        ctx,
+        timeSerie,
+        labels,
+        unitNames,
+        data,
+      });
+    }
+    if (charts[tsId]) {
+      updatePeriodLabel({
+        data: charts[tsId].data.datasets[0].data,
+        tsId,
+        period: "pt24h",
+      });
+    }
+  } catch (error) {
+    alert("Es gab einen Fehler beim Laden der Diagramme: " + error);
+  }
 }
 
 /*

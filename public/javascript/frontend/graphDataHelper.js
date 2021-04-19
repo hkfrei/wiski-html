@@ -63,11 +63,16 @@ const graphDataHelper = {
   getYearlyMinMax: function ({ data }) {
     const result = { min: 0, max: 0 };
     for (var i = 0; i < data.length; i++) {
-      const value = data[i][1];
+      // use absolute values when available
+      const value = data[i][2] ? data[i][2] : data[i][1];
       if (!value) {
         continue;
       }
-      if (i === 0) {
+      /* if we have a value and the result is still 0,
+       * set result min and max to the value. necessary
+       * to not have a too wide range e.g. 0 to xy
+       */
+      if (result.min === 0 && result.max === 0) {
         result.min = value;
         result.max = value;
         continue;

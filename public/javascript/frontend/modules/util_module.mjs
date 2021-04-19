@@ -310,8 +310,10 @@ const normalizeYAxis = async ({ graphContainers, charts }) => {
       const minMax = await graphDataHelper.getYearlyMinMax({
         data: timeSerie[0].data,
       });
+      const currentYAxisConfig = charts[tsId].options.scales.yAxes[0];
       charts[tsId].options.scales.yAxes = [
         {
+          ...currentYAxisConfig,
           ticks: {
             suggestedMin: minMax.min,
             suggestedMax: minMax.max,

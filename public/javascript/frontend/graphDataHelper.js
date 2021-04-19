@@ -40,11 +40,15 @@ const graphDataHelper = {
    */
   prepStationData: function ({ data } = {}) {
     const result = { labels: [], data: [] };
-    data.forEach((element) => {
+    for (const element of data) {
+      // don't add falsy values except 0
+      if (!element[1] && element[1] !== 0) {
+        continue;
+      }
       const date = new Date(element[0]);
       result.labels.push(date);
       result.data.push({ x: date, y: element[1] });
-    });
+    }
     return result;
   },
 

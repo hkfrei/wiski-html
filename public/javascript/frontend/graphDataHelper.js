@@ -46,8 +46,10 @@ const graphDataHelper = {
         continue;
       }
       const date = new Date(element[0]);
+      // use absolute values where available
+      const value = element[2] ? element[2] : element[1];
       result.labels.push(date);
-      result.data.push({ x: date, y: element[1] });
+      result.data.push({ x: date, y: value });
     }
     return result;
   },
@@ -58,7 +60,7 @@ const graphDataHelper = {
    * @param {array} params.data - time-series data from kiwis.
    * @returns {object} result - {min:x, max:y}.
    */
-  getYearlyMinMax: function ({ data } = {}) {
+  getYearlyMinMax: function ({ data }) {
     const result = { min: 0, max: 0 };
     for (var i = 0; i < data.length; i++) {
       const value = data[i][1];

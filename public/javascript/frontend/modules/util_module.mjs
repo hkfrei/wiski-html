@@ -7,6 +7,7 @@ const noDataPeriodLabels = {
   p1y: "Innerhalb des letzten Jahres gibt es keine Daten.",
 };
 const locale = "de-CH";
+const notNormalizedYAxis = ["Niederschlag"];
 
 const graphDataWorker = new Worker("javascript/frontend/graphDataHelper.js");
 const graphDataHelper = Comlink.wrap(graphDataWorker);
@@ -289,6 +290,41 @@ const upateBodenAnnotations = ({ chart, xMin, xMax }) => {
   });
 };
 
+const normalizeYAxis = async ({ graphContainers, charts }) => {
+  for (const node of graphContainers) {
+    const tsId = node.dataset.tsid;
+    const chart = charts[tsId];
+    const url = node.dataset.diagramdataurl;
+    const label = chart.data.datasets[0].label;
+    // don't change niederschlag
+    if (notNormalizedYAxis.includes(label)) {
+      continue;
+    }
+    // fetch yearly data for the diagram
+    try {
+      const timeSerie = await graphDataHelper.getGraphData({
+        url,
+        tsId,
+        period: "p1y",
+      });
+      const minMax = await graphDataHelper.getYearlyMinMax({
+        data: timeSerie[0].data,
+      });
+      charts[tsId].options.scales.yAxes = [
+        {
+          ticks: {
+            suggestedMin: minMax.min,
+            suggestedMax: minMax.max,
+          },
+        },
+      ];
+      charts[tsId].update();
+    } catch (error) {
+      console.error(error);
+    }
+  }
+};
+
 export {
   graphDataHelper,
   changeGraphDate,
@@ -296,4 +332,5 @@ export {
   displayDiagramLoadError,
   createChart,
   updatePeriodLabel,
+  normalizeYAxis,
 };

@@ -47,6 +47,34 @@ const graphDataHelper = {
     });
     return result;
   },
+
+  /*
+   * get min/max value of a yearly time series.
+   * @param {object} params - function parameter object.
+   * @param {array} params.data - time-series data from kiwis.
+   * @returns {object} result - {min:x, max:y}.
+   */
+  getYearlyMinMax: function ({ data } = {}) {
+    const result = { min: 0, max: 0 };
+    for (var i = 0; i < data.length; i++) {
+      const value = data[i][1];
+      if (!value) {
+        continue;
+      }
+      if (i === 0) {
+        result.min = value;
+        result.max = value;
+        continue;
+      }
+      if (value < result.min) {
+        result.min = value;
+      }
+      if (value > result.max) {
+        result.max = value;
+      }
+    }
+    return result;
+  },
 };
 
 Comlink.expose(graphDataHelper);

@@ -4,6 +4,7 @@ import {
   prepStationData,
   createChart,
   updatePeriodLabel,
+  normalizeYAxis,
 } from "./modules/util_module.mjs";
 
 const charts = {};
@@ -84,8 +85,8 @@ for (const node of graphContainers) {
   const tsId = node.dataset.tsid;
   const url = node.dataset.diagramdataurl;
   const unitNames = JSON.parse(node.dataset.unitnames);
-  // fetch data for the diagrams
   try {
+    // iife because to levele avait is not supported by every browser.
     (async function () {
       const timeSeries = await graphDataHelper.getGraphData({
         url,
@@ -125,7 +126,7 @@ for (const node of graphContainers) {
     alert("Es gab einen Fehler beim Laden der Diagramme: " + error);
   }
 }
-// get the yearly range for the time series to normalize the axis across periods.
+
 /*
  * post a message to the parent window with the
  * height of this site in order it can update it's
@@ -134,9 +135,27 @@ for (const node of graphContainers) {
 const sendHeightStatus = (container) => {
   window.parent.postMessage({ height: container.offsetHeight }, "*");
 };
+
 /* on the first page load, send the height
  * of the iframe to the reqesting app.
  */
 window.requestAnimationFrame(() => {
   window.requestAnimationFrame(() => sendHeightStatus(container));
 });
+
+/*
+ * wait for the initial creation of the diagrams (pt24h) and
+ * then call a callback function to normalize the y axis.
+ * @param {function} cb - the callback function to execute.
+ */
+const waitForInitialDiagramLoad = (cb) => {
+  window.requestAnimationFrame(() => {
+    if (graphContainers.length === Object.keys(charts).length) {
+      cb();
+    } else {
+      waitForInitialDiagramLoad(cb);
+    }
+  });
+};
+
+waitForInitialDiagramLoad(() => normalizeYAxis({ graphContainers, charts }));

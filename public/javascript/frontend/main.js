@@ -8,7 +8,7 @@ import {
 } from "./modules/util_module.mjs";
 
 const charts = {};
-
+const wiskiContainer = document.getElementById("wiski-container");
 const timeRadios = document.querySelectorAll(".graph-time-radio");
 timeRadios.forEach((radio) =>
   radio.addEventListener("click", (e) => {
@@ -125,6 +125,15 @@ for (const node of graphContainers) {
   } catch (error) {
     alert("Es gab einen Fehler beim Laden der Diagramme: " + error);
   }
+}
+
+/*
+ * if the page runs in an iframe, hide the body vertical scrollbar
+ * because it can create flackering when chart tooltips are displayed.
+ * that said, it is important for the iframe user, to make the iframe content scrollable.
+ */
+if (window.location !== window.parent.location) {
+  wiskiContainer.style.overflowY = "hidden";
 }
 
 /*

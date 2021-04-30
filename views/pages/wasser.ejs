@@ -5,7 +5,7 @@
   <head>
     <%- include('../partials/head'); %>
   </head>
-  <body class="container-fluid info-container">
+  <body class="container-fluid info-container" id="wiski-container">
     <div class="accordion" id="accordionExample">
       <div class="card">
         <div class="card-header" id="headingOne">
@@ -201,20 +201,12 @@
     </div>
     <%- include('../partials/footer'); %>
     <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.bundle.min.js"
-      integrity="sha512-SuxO9djzjML6b9w9/I07IWnLnQhgyYVSpHZx0JV97kGBfTIsUYlWflyuW4ypnvhBrslz1yJ3R+S14fdCWmSmSA=="
+      src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.2.0/chart.min.js"
+      integrity="sha512-VMsZqo0ar06BMtg0tPsdgRADvl0kDHpTbugCBBrL55KmucH6hP9zWdLIWY//OTfMnzz6xWQRxQqsUFefwHuHyg=="
       crossorigin="anonymous"
     ></script>
-    <script type="module" src="javascript/frontend/main.js"></script>
-    <script
-      async
-      defer
-      src="javascript/frontend/chartjs-plugin-downsample.js"
-    ></script>
-    <script
-      async
-      defer
-      src="javascript/frontend/chartjs-plugin-annotation.min.js"
-    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@2.0.0/dist/chartjs-adapter-date-fns.bundle.min.js" async defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.0.1/dist/chartjs-plugin-annotation.min.js" async defer></script>
+    <script type="module" src="javascript/frontend/main.js" async defer></script>
   </body>
 </html>

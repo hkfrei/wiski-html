@@ -24,9 +24,10 @@ const changeGraphDate = async ({ tsId, period, chart, url } = {}) => {
   if (!tsId || !period) {
     return;
   }
-  const threshold = period === "P1Y" ? 100 : 50;
+  // threshold can be changed according to period if needed.
+  const threshold = period === "p1y" ? 50 : 50;
   const wait = document.querySelector(`.wait-${tsId}`);
-  if (period !== "PT24H") {
+  if (period !== "pt24h") {
     window.requestAnimationFrame(() => {
       wait.style.visibility = "visible";
     });
@@ -40,10 +41,10 @@ const changeGraphDate = async ({ tsId, period, chart, url } = {}) => {
     const { data, labels } = await prepStationData({
       data: timeSeries[0].data,
       canvas: chart.canvas,
+      threshold,
     });
     chart.data.labels = labels;
     chart.data.datasets[0].data = data;
-    chart.downsample(threshold);
     if (timeSeries[0].parametertype_name === "Bodensaugspannung") {
       const xMin = data[0].x;
       const xMax = data[data.length - 1].x;
@@ -68,11 +69,11 @@ const changeGraphDate = async ({ tsId, period, chart, url } = {}) => {
  * @param {<canvas>} params.canvas - html canvas element.
  * @returns {object} result - { labels:['the labels'], data:['chart.js optimized data'] }.
  */
-const prepStationData = async ({ data, canvas } = {}) => {
+const prepStationData = async ({ data, canvas, threshold } = {}) => {
   if (!data || Array.isArray(data) === false || data.length === 0) {
     displayDiagramLoadError(canvas);
   }
-  const result = await graphDataHelper.prepStationData({ data });
+  const result = await graphDataHelper.prepStationData({ data, threshold });
   return result;
 };
 
@@ -115,54 +116,58 @@ const createChart = ({ ctx, labels, timeSerie, data, unitNames }) => {
       ],
     },
     options: {
-      downsample: {
-        enabled: true,
-        threshold: 50,
+      responsive: true,
+      interaction: { mode: "point" },
+      plugins: {
+        tooltip: {
+          displayColors: false,
+          titleMarginBottom: 0,
+          footerMarginTop: 0,
+        },
       },
-      tooltips: { mode: "nearest" },
+      locale,
+      elements: {
+        point: {
+          pointStyle: "circle",
+          borderWidth: 2,
+        },
+      },
       scales: {
-        xAxes: [
-          {
-            ticks: { maxTicksLimit: 4 },
-            type: "time",
-            time: {
-              displayFormats: { day: "D MMM", hour: "D MMM ha" },
-              tooltipFormat: "dddd DD.MM.YYYY HH:mm",
-            },
+        x: {
+          adapters: {
+            date: {},
           },
-        ],
-        yAxes: [
-          {
-            ticks: {
-              beginAtZero: false,
+          ticks: { maxTicksLimit: 6, font: { size: 11 } },
+          type: "timeseries",
+          time: {
+            displayFormats: {
+              month: "dd.MM.yy.",
+              day: "dd.MM.",
+              hour: "dd.MM. - HH:mm",
             },
-            scaleLabel: {
-              display: true,
-              labelString: unitNames[timeSerie.ts_unitsymbol]
-                ? `[${unitNames[timeSerie.ts_unitsymbol]}]`
-                : `[${timeSerie.stationparameter_name}]`,
-            },
+            tooltipFormat: "dd.MM.yy / HH:mm",
           },
-        ],
+        },
+        y: {
+          ticks: {
+            beginAtZero: false,
+            font: { size: 11 },
+          },
+          title: {
+            display: true,
+            font: { size: 10 },
+            text: unitNames[timeSerie.ts_unitsymbol]
+              ? `[${unitNames[timeSerie.ts_unitsymbol]}]`
+              : `[${timeSerie.stationparameter_name}]`,
+          },
+        },
       },
       showLines: true,
     },
   });
   if (timeSerie.parametertype_name === "Bodensaugspannung") {
-    chart.options.scales.yAxes = [
-      {
-        ticks: {
-          suggestedMin: 0,
-          suggestedMax: 100,
-        },
-        scaleLabel: {
-          display: true,
-          labelString: `[${unitNames[timeSerie.ts_unitsymbol]}]`,
-        },
-      },
-    ];
     // use the annotation plugin to draw colored boxes with the "feuchtigkeit" categories.
-    chart.options.annotation = getBodenAnnotations(data);
+    chart.options.plugins.annotation = getBodenAnnotations(data);
   }
   return chart;
 };
@@ -217,17 +222,11 @@ const getBodenAnnotations = (data) => {
   const xMin = data[0].x;
   const xMax = data[data.length - 1].x;
   return {
-    annotations: [
-      {
+    annotations: {
+      nass: {
         type: "box",
         // optional drawTime to control layering, overrides global drawTime setting
         drawTime: "beforeDatasetsDraw",
-        // optional annotation ID (must be unique)
-        id: "nass",
-        // ID of the X scale to bind onto
-        xScaleID: "x-axis-0",
-        // ID of the Y scale to bind onto
-        yScaleID: "y-axis-0",
         // Left edge of the box. in units along the x axis
         xMin,
         // Right edge of the box
@@ -237,44 +236,39 @@ const getBodenAnnotations = (data) => {
         // Bottom edge of the box
         yMin: 0,
         backgroundColor: "rgba(255,0,0,0.5)",
+        borderWidth: 0,
       },
-      {
+      sehrFeucht: {
         type: "box",
         drawTime: "beforeDatasetsDraw",
-        id: "sehr feucht",
-        xScaleID: "x-axis-0",
-        yScaleID: "y-axis-0",
         xMin,
         xMax,
         yMax: 10,
         yMin: 6,
         backgroundColor: "rgba(255,127,0,0.5)",
+        borderWidth: 0,
       },
-      {
+      feucht: {
         type: "box",
         drawTime: "beforeDatasetsDraw",
-        id: "feucht",
-        xScaleID: "x-axis-0",
-        yScaleID: "y-axis-0",
         xMin,
         xMax,
         yMax: 20,
         yMin: 10,
         backgroundColor: "rgba(255,193,37,0.5)",
+        borderWidth: 0,
       },
-      {
+      trocken: {
         type: "box",
         drawTime: "beforeDatasetsDraw",
-        id: "trocken",
-        xScaleID: "x-axis-0",
-        yScaleID: "y-axis-0",
         xMin,
         xMax,
         yMax: 100,
         yMin: 20,
         backgroundColor: "rgba(34,139,34,0.5)",
+        borderWidth: 0,
       },
-    ],
+    },
   };
 };
 
@@ -282,11 +276,11 @@ const upateBodenAnnotations = ({ chart, xMin, xMax }) => {
   if (!chart || !xMin || !xMax) {
     return;
   }
-  const elements = chart.annotation.elements;
-  const elementKeys = Object.keys(elements);
-  elementKeys.forEach((key) => {
-    elements[key].options.xMin = xMin;
-    elements[key].options.xMax = xMax;
+  const annotations = chart.options.plugins.annotation.annotations;
+  const annotationKeys = Object.keys(annotations);
+  annotationKeys.forEach((key) => {
+    annotations[key].xMin = xMin;
+    annotations[key].xMax = xMax;
   });
 };
 
@@ -310,16 +304,12 @@ const normalizeYAxis = async ({ graphContainers, charts }) => {
       const minMax = await graphDataHelper.getYearlyMinMax({
         data: timeSerie[0].data,
       });
-      const currentYAxisConfig = charts[tsId].options.scales.yAxes[0];
-      charts[tsId].options.scales.yAxes = [
-        {
-          ...currentYAxisConfig,
-          ticks: {
-            suggestedMin: minMax.min,
-            suggestedMax: minMax.max,
-          },
-        },
-      ];
+      const currentYAxisConfig = charts[tsId].options.scales.y;
+      charts[tsId].options.scales.y = {
+        ...currentYAxisConfig,
+        suggestedMin: minMax.min,
+        suggestedMax: minMax.max,
+      };
       charts[tsId].update();
     } catch (error) {
       console.error(error);

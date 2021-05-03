@@ -4,9 +4,9 @@
   <% } else {
     if(docs.pictures){ %>
       <h6>Stationsfoto:</h6>
-    <% docs.bilder.forEach(bild => { %>
+    <% docs.pictures.forEach(bild => { %>
         <div>
-          <img src="<%= documents_host%><%= bild %>" alt="stationsbild" />
+          <img src="<%= documents_host%><%= bild %>" alt="stationsbild" class="station__image" />
         </div>
   <% }) 
     } 
@@ -14,32 +14,32 @@
       <h6 class="documents__title">Diagramme:</h6>
     <% docs.graphs.forEach(graph => { %> 
         <div>
-          <img src="<%= documents_host%><%= graph %>" alt="Diagramm" />
+          <img src="<%= documents_host%><%= graph %>" alt="Diagramm" class="station__image" />
         </div>
   <% }) 
     } 
     if(docs.profil){ %>
       <h6 class="documents__title">Bohrprofil:</h6>
       <div>
-        <img src="<%= documents_host%><%= docs.profil %>" alt="Bohrprofil" />
+        <img src="<%= documents_host%><%= docs.profil %>" alt="Bohrprofil" class="station__image" />
       </div>
     <% }
     if(docs.catchment){ %>
       <h6 class="documents__title">Einzugsgebiet:</h6>
       <div>
-        <img src="<%= documents_host%><%= docs.catchment %>" alt="Einzugsgebiet" />
+        <img src="<%= documents_host%><%= docs.catchment %>" alt="Einzugsgebiet" class="station__image" />
       </div>
     <% }  
     if(docs.map){ %>
       <h6 class="documents__title">Karte:</h6>
       <div>
-        <img src="<%= documents_host%><%= docs.map %>" alt="Karte" />
+        <img src="<%= documents_host%><%= docs.map %>" alt="Karte" class="station__image" />
       </div>
     <% }
     if(docs.orthophoto){ %>
       <h6 class="documents__title">Orthofoto:</h6>
       <div>
-        <img src="<%= documents_host%><%= docs.orthophoto %>" alt="Orthofoto" />
+        <img src="<%= documents_host%><%= docs.orthophoto %>" alt="Orthofoto" class="station__image" />
       </div>
     <% } 
   } %>

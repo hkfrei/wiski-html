@@ -25,7 +25,11 @@ app.use(
         "https://stackpath.bootstrapcdn.com",
         "'unsafe-inline'",
       ],
-      imgSrc: ["'self'", "https://kiwis.innetag.ch"],
+      imgSrc: [
+        "'self'",
+        "https://kiwis.innetag.ch",
+        "https://data.monitron.ch",
+      ],
       //allowed iframe users
       frameAncestors: [
         "'self'",

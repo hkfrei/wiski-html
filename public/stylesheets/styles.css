@@ -82,3 +82,7 @@ div[class^="wait-"] {
   visibility: hidden;
   padding: 0 0 0 16px;
 }
+
+.station__image {
+  max-width: 100%;
+}

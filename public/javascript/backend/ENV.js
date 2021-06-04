@@ -28,6 +28,7 @@ module.exports = {
     "Niederschlag - Hydrometrie": 41608,
     "Fliessgewässer - Hydrometrie": 41608,
     "Grundwasser - Hydrometrie": 41608,
+    Bohrung: 41608,
   },
   service_host: "https://wiski-html-h2eptfuxza-oa.a.run.app",
   measure_periods: {

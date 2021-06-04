@@ -72,9 +72,20 @@ const waterUtil = {
     const latest_measurements = [];
     for (const serie of time_series) {
       const latest_measurement_response = await fetch(
-        `${env.kiwis_host}${env.latest_measurement}&ts_id=${serie.ts_id}`
+        `${env.kiwis_host}${env.latest_measurement}&ts_id=${serie.ts_id}&period=${env.latest_measurement_period}`
       );
       const latest_measurement = await latest_measurement_response.json();
+
+      // get the youngest valid measurement of the "env.latest_measurement_period"
+      const data = latest_measurement[0].data;
+      for (let i = data.length - 1; i >= 0; i--) {
+        const measurement = data[i];
+        if (measurement[1] !== null) {
+          latest_measurement[0].data[0] = measurement;
+          break;
+        }
+      }
+
       // create the correct unit labels
       latest_measurements.push(labelLatestMeasurement(latest_measurement[0]));
     }

@@ -72,17 +72,24 @@ const waterUtil = {
     const latest_measurements = [];
     for (const serie of time_series) {
       const latest_measurement_response = await fetch(
-        `${env.kiwis_host}${env.latest_measurement}&ts_id=${serie.ts_id}&period=${env.latest_measurement_period}`
+        `${env.kiwis_host}${env.latest_measurement}&ts_id=${serie.ts_id}`
       );
       const latest_measurement = await latest_measurement_response.json();
 
-      // get the youngest valid measurement of the "env.latest_measurement_period"
-      const data = latest_measurement[0].data;
-      for (let i = data.length - 1; i >= 0; i--) {
-        const measurement = data[i];
-        if (measurement[1] !== null) {
-          latest_measurement[0].data[0] = measurement;
-          break;
+      // if latest measurement is not valid, check for a valid measurement during "env.latest_measurement_period".
+      if (latest_measurement[0].data[0][1] === null) {
+        const latest_measurements_series_response = await fetch(
+          `${env.kiwis_host}${env.latest_measurement}&ts_id=${serie.ts_id}&period=${env.latest_measurement_period}`
+        );
+        const latest_measurement_series = await latest_measurements_series_response.json();
+        // get the youngest valid measurement of the "env.latest_measurement_period"
+        const data = latest_measurement_series[0].data;
+        for (let i = data.length - 1; i >= 0; i--) {
+          const measurement = data[i];
+          if (measurement[1] !== null) {
+            latest_measurement[0].data[0] = measurement;
+            break;
+          }
         }
       }
 

@@ -21,7 +21,7 @@
     if(docs.profil){ %>
       <h6 class="documents__title">Bohrprofil:</h6>
       <div>
-        <img src="<%= documents_host%><%= docs.profil %>" alt="Bohrprofil" class="station__image" />
+        <a href="<%= documents_host%><%= docs.profil %>"><img src="images/file-richtext.svg" alt="bohrprofil" />&nbsp;PDF Bohrprofil</a>
       </div>
     <% }
     if(docs.catchment){ %>

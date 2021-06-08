@@ -38,6 +38,7 @@
           %>
           <div class="card-body card-body-nospace">
             <%-include('../partials/station-status',{online:station.ONLINE_PUBLICATION});%>
+            <%-include('../partials/station-info-element',{key:"Nummer (WISKI)",value:station.station_no});%>
             <%-include('../partials/station-info-element',{key:"Name",value:station.station_name});%>
             <%-include('../partials/station-info-element',{key:"Fachgebiet",value:station.object_type});%>
             <%-include('../partials/station-info-element',{key:"Messparameter",value:measure_params});

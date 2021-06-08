@@ -11,12 +11,17 @@
 .infoelement__key,
 .infoelement__value {
   font-size: 14px;
-  width: 50%;
 }
 
 .infoelement__key {
   padding-right: 8px;
   font-weight: 600;
+  width: 30%;
+}
+
+.infoelement__list {
+  list-style-type: none;
+  padding-inline-start: 0;
 }
 
 .documents__title {

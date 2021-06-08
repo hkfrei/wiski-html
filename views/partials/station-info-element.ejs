@@ -1,7 +1,13 @@
 <div class="infoelement">
   <div class="infoelement__key"><%= key %></div>
   <% if(key === "Messparameter"){ %>
-  <div class="infoelement__value"><%= value.join(" | ") %></div>
+  <div class="infoelement__value">
+    <ul class="infoelement__list">
+      <% value.forEach(element =>{%>
+        <li>✔ <%=element %></li>
+        <%})%>
+    </ul>
+  </div>
   <% } else{ %>
   <div class="infoelement__value">
     <%= value %>

@@ -34,8 +34,10 @@
         <img src="images/file-richtext.svg" alt="profil" />
         <a href="<%= documents_host%><%= docs.profil %>" target="_blank">Link <%=docs.typ%>profil (PDF)</a>
       </div>
-    <% } %>
-  <hr style="margin: 24px 0;"/>
+    <% } 
+  if(docs.profil || docs.yearbookArchive || docs.yearbookValidated || docs.masterdata){ %>
+    <hr style="margin: 24px 0;"/>
+  <% } %>
   <section>
     <h6 class="document__title" style="margin-bottom: 24px;">Download von Zeitreihen im .xlsx Format:
       <small class="badge badge-warning mt-2">Achtung(!) Daten teilweise nicht validiert.</small>

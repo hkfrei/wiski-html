@@ -1,40 +1,46 @@
 <div>
-  <% if(Array.isArray(docs) && (docs.length === 0) || typeof docs.pictures === "undefined"){ %>
+  <% if(Array.isArray(docs) && (docs.length === 0)){ %>
     <h6 class="documents__title">Es sind keine Bilder verfügbar.&nbsp;🤔</h6>
-  <% } else {
-    if(docs.pictures){ %>
-      <h6>Stationsfoto:</h6>
-    <% docs.pictures.forEach(bild => { %>
-        <div>
-          <img src="<%= documents_host%><%= bild %>" alt="stationsbild" class="station__image" />
-        </div>
-  <% }) 
-    } 
-    if(docs.graphs){ %>
-      <h6 class="documents__title">Diagramme:</h6>
-    <% docs.graphs.forEach(graph => { %> 
-        <div>
-          <img src="<%= documents_host%><%= graph %>" alt="Diagramm" class="station__image" />
-        </div>
-  <% }) 
-    } 
-    if(docs.catchment){ %>
-      <h6 class="documents__title">Einzugsgebiet:</h6>
-      <div>
-        <img src="<%= documents_host%><%= docs.catchment %>" alt="Einzugsgebiet" class="station__image" />
+  <% }
+  if(typeof docs.pictures === "undefined" &&  
+     typeof docs.graphs === "undefined" &&
+     typeof docs.catchment === "undefined" &&
+     typeof docs.map === "undefined" &&
+     typeof docs.orthophoto === "undefined"){ %>
+    <h6 class="documents__title">Es sind keine Bilder verfügbar.&nbsp;🤔</h6>
+  <%}
+  if(docs.pictures){ %>
+    <h6>Stationsfoto:</h6>
+  <% docs.pictures.forEach(bild => { %>
+      <div style="padding-bottom: 8px;">
+        <img src="<%= documents_host%><%= bild %>" alt="stationsbild" class="station__image" />
       </div>
-    <% }  
-    if(docs.map){ %>
-      <h6 class="documents__title">Karte:</h6>
+<% }) 
+  } 
+  if(docs.graphs){ %>
+    <h6 class="documents__title">Diagramme:</h6>
+  <% docs.graphs.forEach(graph => { %> 
       <div>
-        <img src="<%= documents_host%><%= docs.map %>" alt="Karte" class="station__image" />
+        <img src="<%= documents_host%><%= graph %>" alt="Diagramm" class="station__image" />
       </div>
-    <% }
-    if(docs.orthophoto){ %>
-      <h6 class="documents__title">Orthofoto:</h6>
-      <div>
-        <img src="<%= documents_host%><%= docs.orthophoto %>" alt="Orthofoto" class="station__image" />
-      </div>
-    <% } 
-  } %>
+<% }) 
+  } 
+  if(docs.catchment){ %>
+    <h6 class="documents__title">Einzugsgebiet:</h6>
+    <div>
+      <img src="<%= documents_host%><%= docs.catchment %>" alt="Einzugsgebiet" class="station__image" />
+    </div>
+  <% }  
+  if(typeof docs.map !== "function" && docs.map){ %>
+    <h6 class="documents__title">Karte:</h6>
+    <div>
+      <img src="<%= documents_host%><%= docs.map %>" alt="Karte" class="station__image" />
+    </div>
+  <% }
+  if(docs.orthophoto){ %>
+    <h6 class="documents__title">Orthofoto:</h6>
+    <div>
+      <img src="<%= documents_host%><%= docs.orthophoto %>" alt="Orthofoto" class="station__image" />
+    </div>
+  <% } %>
 </div>  

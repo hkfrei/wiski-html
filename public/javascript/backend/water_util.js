@@ -66,7 +66,48 @@ const waterUtil = {
     const timeSeriesResponse = await fetch(
       `${env.kiwis_host}${env.time_series_list}&station_id=${stationid}&timeseriesgroup_id=${ts_group_id}`
     );
-    const time_series = await timeSeriesResponse.json();
+    let time_series = await timeSeriesResponse.json();
+
+    // if it is a boden station, sort the timeseries the right order.
+    if (
+      firstStation.object_type &&
+      firstStation.object_type.toLowerCase().indexOf("boden") !== -1
+    ) {
+      const sorted_time_series = [];
+      time_series.forEach((serie) => {
+        switch (serie.parametertype_name) {
+          case "Bodensaugspannung":
+            if (serie.stationparameter_name.indexOf("20 cm") !== -1) {
+              sorted_time_series[0] = serie;
+            }
+            if (serie.stationparameter_name.indexOf("35 cm") !== -1) {
+              sorted_time_series[1] = serie;
+            }
+            if (serie.stationparameter_name.indexOf("60 cm") !== -1) {
+              sorted_time_series[2] = serie;
+            }
+            break;
+          case "Niederschlag":
+            sorted_time_series[3] = serie;
+            break;
+          case "Bodentemperatur":
+            if (serie.stationparameter_name.indexOf("20 cm") !== -1) {
+              sorted_time_series[4] = serie;
+            }
+            if (serie.stationparameter_name.indexOf("35 cm") !== -1) {
+              sorted_time_series[5] = serie;
+            }
+            if (serie.stationparameter_name.indexOf("60 cm") !== -1) {
+              sorted_time_series[6] = serie;
+            }
+            break;
+          default:
+            sorted_time_series.push(serie);
+        }
+      });
+      // remove empty entries
+      time_series = sorted_time_series.filter((entry) => entry !== null);
+    }
 
     // get latest measurements for each time series
     const latest_measurements = [];

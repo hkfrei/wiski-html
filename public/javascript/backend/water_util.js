@@ -116,9 +116,9 @@ const waterUtil = {
         `${env.kiwis_host}${env.latest_measurement}&ts_id=${serie.ts_id}`
       );
       const latest_measurement = await latest_measurement_response.json();
-
-      // if latest measurement is not valid, check for a valid measurement during "env.latest_measurement_period".
-      if (latest_measurement[0].data[0][1] === null) {
+      // if latest measurement is not valid, check for a valid measurement a while back during "env.latest_measurement_period".
+      const latest_data = latest_measurement[0].data;
+      if (latest_data.length > 0 && latest_data[0][1] === null) {
         const latest_measurements_series_response = await fetch(
           `${env.kiwis_host}${env.latest_measurement}&ts_id=${serie.ts_id}&period=${env.latest_measurement_period}`
         );

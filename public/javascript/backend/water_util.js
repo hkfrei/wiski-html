@@ -25,9 +25,49 @@ const labelLatestMeasurement = (measurement) => {
     if (data[2]) {
       result.absoluteValue = `${data[2]} ${unit_name}`;
     }
+    // add some additional infos for bodenfeuchte -> saugspannung
+    if (result.parametertype_name.indexOf("saugspannung") !== -1) {
+      result.saugspannung = getSaugspannungMetadata(data[1]);
+    }
   }
   return result;
 };
+
+/*
+ * create a colored latest measurement value for bodenfeuchte.
+ * @param {number} value - the saugspannung value.
+ * @returns {object} result - contains hex color, text and html to display the result.
+ */
+const getSaugspannungMetadata = (value) => {
+  const result = {
+    color: "",
+    text: "",
+    html: "<span>Keine Daten verfügbar</span>",
+  };
+  if (!value) {
+    return result;
+  }
+  if (value > 20) {
+    result.color = "#28a745";
+    result.text = "trocken";
+  }
+  if (value > 10 && value <= 20) {
+    result.color = "#ffc107";
+    result.text = "feucht";
+  }
+  if (value >= 6 && value <= 10) {
+    result.color = "#ff7f00";
+    result.text = "sehr feucht";
+  }
+  if (value < 6) {
+    result.color = "#dc3545";
+    result.text = "nass";
+  }
+  result.html = `<span style="padding:8px; border-radius:4px; width:20px; height:10px; background-color:${result.color};">`;
+  result.html += `<strong>${value}</strong> Centibar (${result.text})</span>`;
+  return result;
+};
+
 const waterUtil = {
   getWaterStationInfo: async (stationid) => {
     // basic station information

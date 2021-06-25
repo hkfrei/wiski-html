@@ -9,8 +9,12 @@ measurements.forEach(measurement => { %>
 <div class="infoelement">
   <div class="infoelement__key">Messwert</div>
   <div class="infoelement__value">
+    <% if(measurement.parametertype_name.indexOf("saugspannung") !== -1){%>
+      <%- measurement.saugspannung.html %>
+    <%} else { %>
     <% if(measurement.value){%><%= measurement.value %> <%}%>
     <% if(measurement.absoluteValue){%><br /><%= measurement.absoluteValue %> <%}%>
+    <% } %>
     <% if(!measurement.data[0]){%> 
         <span>Keine Daten verfügbar</span>
       <%}%>

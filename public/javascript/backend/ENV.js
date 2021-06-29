@@ -1,9 +1,9 @@
 module.exports = {
   kiwis_host: "https://kiwis.innetag.ch",
   time_series_list:
-    "/KiWIS/KiWIS?returnfields=station_id%2Cts_id%2Cts_name%2Cts_type_name%2Cparametertype_name%2Cstationparameter_name%2Ccoverage%2Cts_unitname%2Cts_unitsymbol%2Cts_unitname_abs%2Cts_unitsymbol_abs&id=timeSeriesList&datasource=1&service=kisters&type=queryServices&request=getTimeseriesList&format=objson",
+    "/KiWIS/KiWIS?returnfields=station_id%2Cts_id%2Cts_name%2Cts_shortname%2Cts_type_name%2Cparametertype_name%2Cstationparameter_name%2Ccoverage%2Cts_unitname%2Cts_unitsymbol%2Cts_unitname_abs%2Cts_unitsymbol_abs&id=timeSeriesList&datasource=1&service=kisters&type=queryServices&request=getTimeseriesList&format=objson",
   latest_measurement:
-    "/KiWIS/KiWIS?datasource=1&service=kisters&type=queryServices&request=getTimeseriesValues&metadata=true&md_returnfields=ts_id,station_name,stationparameter_name,station_no,station_id,ts_unitsymbol,parametertype_name&format=dajson&returnfields=Timestamp,Value,Absolute Value",
+    "/KiWIS/KiWIS?datasource=1&service=kisters&type=queryServices&request=getTimeseriesValues&metadata=true&md_returnfields=ts_id,station_name,stationparameter_name,station_no,station_id,ts_unitsymbol,parametertype_name,ts_name,ts_shortname&format=dajson&returnfields=Timestamp,Value,Absolute Value",
   latest_measurement_period: "pt24h",
   diagram_data:
     "/KiWIS/KiWIS?dateformat=yyyy-MM-dd%27T%27HH%3Amm%3AssXXX&metadata=true&timezone=CET&md_returnfields=station_id%2Cts_id%2Cstation_name%2Cparametertype_name%2Cstationparameter_name%2Cts_unitsymbol&returnfields=Timestamp%2CValue%2CAbsolute Value&id=timeSeriesValues&datasource=1&service=kisters&type=queryServices&request=getTimeseriesValues",

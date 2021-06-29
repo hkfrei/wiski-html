@@ -5,6 +5,10 @@ measurements.forEach(measurement => { %>
 
 <div class="measurement__parametertitle">
   <%= measurement.stationparameter_name %>
+  <% if(measurement.ts_name !== "Aperiodisch validiert"){ %>
+    <small>(<%= measurement.ts_name %>)</small>
+  <%}%>
+  
 </div>
 <div class="infoelement">
   <div class="infoelement__key">Messwert</div>

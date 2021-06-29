@@ -101,7 +101,14 @@ const displayDiagramLoadError = (canvas) => {
  * @param {array} data - the data to create the graph.
  * @returns {object} chart - chart.js instance.
  */
-const createChart = ({ ctx, labels, timeSerie, data, unitNames }) => {
+const createChart = ({
+  ctx,
+  labels,
+  timeSerie,
+  data,
+  unitNames,
+  statistics,
+}) => {
   const chart = new Chart(ctx, {
     type: "line",
     data: {
@@ -168,6 +175,10 @@ const createChart = ({ ctx, labels, timeSerie, data, unitNames }) => {
   if (timeSerie.parametertype_name === "Bodensaugspannung") {
     // use the annotation plugin to draw colored boxes with the "feuchtigkeit" categories.
     chart.options.plugins.annotation = getBodenAnnotations(data);
+  }
+  if (statistics !== false && typeof statistics === "object") {
+    chart.options.plugins.annotation = getStatisticAnnotations(statistics);
+    chart.statistics = statistics;
   }
   return chart;
 };
@@ -272,6 +283,42 @@ const getBodenAnnotations = (data) => {
   };
 };
 
+const getStatisticAnnotations = (statistics) => {
+  const keys = Object.keys(statistics);
+  const result = {
+    annotations: {},
+  };
+
+  keys.forEach((key) => {
+    let borderColor = "#377eb8";
+    if (key.indexOf("min") !== -1) {
+      borderColor = "#4daf4a";
+    }
+    if (key.indexOf("max") !== -1) {
+      borderColor = "#e41a1c";
+    }
+    result.annotations[key] = {
+      type: "line",
+      yMin: statistics[key],
+      yMax: statistics[key],
+      borderColor,
+      borderWidth: 1,
+      borderDash: [6, 3],
+      label: {
+        backgroundColor: "rgba(255,255,255,0.3",
+        color: "#000",
+        content: key,
+        enabled: true,
+        font: { style: "normal" },
+        position: "start",
+        xPadding: 2,
+        yPadding: 0,
+      },
+    };
+  });
+  return result;
+};
+
 const upateBodenAnnotations = ({ chart, xMin, xMax }) => {
   if (!chart || !xMin || !xMax) {
     return;
@@ -284,6 +331,25 @@ const upateBodenAnnotations = ({ chart, xMin, xMax }) => {
   });
 };
 
+/*
+ * update the y-axis scales of a chart.
+ * @param {object} params - function parameter object.
+ * @param {object} params.chart - chart.js instance.
+ * @param {object} minMax - min and max values to use for the y axis scales.
+ */
+const updateYAxis = ({ chart, minMax } = {}) => {
+  if (!chart || typeof minMax !== "object") {
+    return;
+  }
+  const currentYAxisConfig = chart.options.scales.y;
+  chart.options.scales.y = {
+    ...currentYAxisConfig,
+    suggestedMin: minMax.min,
+    suggestedMax: minMax.max,
+  };
+  chart.update();
+};
+
 const normalizeYAxis = async ({ graphContainers, charts }) => {
   for (const node of graphContainers) {
     const tsId = node.dataset.tsid;
@@ -292,6 +358,22 @@ const normalizeYAxis = async ({ graphContainers, charts }) => {
     const label = chart.data.datasets[0].label;
     // don't change niederschlag
     if (notNormalizedYAxis.includes(label)) {
+      continue;
+    }
+    const statistics = chart.statistics;
+    // if there are statistical values, use them to scale the y axis
+    if (statistics) {
+      const keys = Object.keys(statistics);
+      const minMax = {};
+      keys.forEach((key) => {
+        if (key.indexOf("min") !== -1) {
+          minMax.min = statistics[key];
+        }
+        if (key.indexOf("max") !== -1) {
+          minMax.max = statistics[key];
+        }
+      });
+      updateYAxis({ chart, minMax });
       continue;
     }
     // fetch yearly data for the diagram
@@ -304,13 +386,7 @@ const normalizeYAxis = async ({ graphContainers, charts }) => {
       const minMax = await graphDataHelper.getYearlyMinMax({
         data: timeSerie[0].data,
       });
-      const currentYAxisConfig = charts[tsId].options.scales.y;
-      charts[tsId].options.scales.y = {
-        ...currentYAxisConfig,
-        suggestedMin: minMax.min,
-        suggestedMax: minMax.max,
-      };
-      charts[tsId].update();
+      updateYAxis({ chart, minMax });
     } catch (error) {
       console.error(error);
     }

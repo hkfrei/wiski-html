@@ -85,6 +85,9 @@ for (const node of graphContainers) {
   const tsId = node.dataset.tsid;
   const url = node.dataset.diagramdataurl;
   const unitNames = JSON.parse(node.dataset.unitnames);
+  const statistics = node.dataset.statistics
+    ? JSON.parse(node.dataset.statistics)
+    : false;
   try {
     // iife because to levele avait is not supported by every browser.
     (async function () {
@@ -112,6 +115,7 @@ for (const node of graphContainers) {
           labels,
           unitNames,
           data,
+          statistics,
         });
       }
       if (charts[tsId]) {

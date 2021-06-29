@@ -40,6 +40,9 @@
     data-tsid="<%= graph.ts_id %>"
     data-diagramdataurl="<%= station.kiwis_host %><%=station.diagram_data %>&format=dajson"
     data-unitnames="<%= JSON.stringify(unit_names) %>"
+    <% if(graph.statistics){ %>
+      data-statistics="<%= JSON.stringify(graph.statistics) %>"
+    <% } %>
     class="graph-container"
     width="500"
     height="300"

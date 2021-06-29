@@ -68,6 +68,76 @@ const getSaugspannungMetadata = (value) => {
   return result;
 };
 
+/*
+ * add statistical values to timeseries
+ * @param {object} params - function parameter object.
+ * @param {array} params.statistics - statistics objects/timeseries
+ * @param {array} params.timeseries - timeseries objects to add statistics to.
+ * @returns {array} params.timeseries - the input timeseries objects with enhanced with statistical data.
+ */
+const addStatisticsToTimeSeries = ({ statistics, timeseries } = {}) => {
+  const result = [];
+  timeseries.forEach((serie) => {
+    statistics.forEach((statistic) => {
+      if (
+        statistic.stationparameter_name.toLowerCase() ===
+        serie.stationparameter_name.toLowerCase()
+      ) {
+        if (!serie.statistics) {
+          serie.statistics = {};
+        }
+        serie.statistics[statistic.ts_name] = statistic.data[0][1];
+      }
+    });
+    result.push(serie);
+  });
+  return result;
+};
+
+/*
+ * filters out the statistical timeseries from an array or timeseries
+ * @param {array} timeseries - timeseries/latest measurement objects received from kiwis
+ * @returns {array} - the timeseries objects with statistical values.
+ */
+const getStatisticsFromTimeseries = (timeseries) => {
+  if (!timeseries) {
+    return [];
+  }
+  return timeseries.filter((element) => {
+    const shortname = element.ts_shortname.toLowerCase();
+    if (
+      shortname.indexOf("max") !== -1 ||
+      shortname.indexOf("min") !== -1 ||
+      shortname.indexOf("mean") !== -1
+    ) {
+      return true;
+    }
+    return false;
+  });
+};
+
+/*
+ * removes statistical values from an array or timeseries
+ * @param {array} timeseries - timeseries/latest measurement objects received from kiwis
+ * @returns {array} - timeseries without statistical values.
+ */
+const removeStatisticsFromTimeseries = (timeseries) => {
+  if (!timeseries) {
+    return [];
+  }
+  return timeseries.filter((element) => {
+    const shortname = element.ts_shortname.toLowerCase();
+    if (
+      shortname.indexOf("max") !== -1 ||
+      shortname.indexOf("min") !== -1 ||
+      shortname.indexOf("mean") !== -1
+    ) {
+      return false;
+    }
+    return true;
+  });
+};
+
 const waterUtil = {
   getWaterStationInfo: async (stationid) => {
     // basic station information
@@ -150,7 +220,7 @@ const waterUtil = {
     }
 
     // get latest measurements for each time series
-    const latest_measurements = [];
+    let latest_measurements = [];
     for (const serie of time_series) {
       const latest_measurement_response = await fetch(
         `${env.kiwis_host}${env.latest_measurement}&ts_id=${serie.ts_id}`
@@ -177,6 +247,21 @@ const waterUtil = {
       // create the correct unit labels
       latest_measurements.push(labelLatestMeasurement(latest_measurement[0]));
     }
+
+    // get the statistic measurements
+    const statistics = getStatisticsFromTimeseries(latest_measurements);
+
+    // if  there are statistics, we have to do some further processing...
+    if (statistics.length > 0) {
+      latest_measurements = removeStatisticsFromTimeseries(latest_measurements);
+      time_series = removeStatisticsFromTimeseries(time_series);
+      time_series = addStatisticsToTimeSeries({
+        statistics,
+        timeseries: time_series,
+      });
+      console.log("timeseries", time_series);
+    }
+
     // extract the measure parameters (names) for this station
     const measure_params = time_series.map(
       (serie) => serie.stationparameter_name

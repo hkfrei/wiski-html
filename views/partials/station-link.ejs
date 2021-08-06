@@ -1,13 +1,8 @@
 <div class="infoelement" style="border-bottom: none;">
   <div class="infoelement__key"><%= key %></div>
   <div class="infoelement__value">
-    <%if(Number.isInteger(parseInt(station.stationNumber))){%>
-    <a
-      href="<%= station.station_website_host %><%=station.stationNumber%>.html"
-      target="blank"
-      rel="noreferrer noopener"
-      ><%= station.station_website_host %><%=station.stationNumber%>.html</a
-    >
+    <%if(station.WEBSITE_DATAOWNER_1.length > 0){%>
+      <%- station.WEBSITE_DATAOWNER_1 %>
     <%} else {%> <span>Keine Website verfügbar</span> <%}%>
   </div>
 </div>

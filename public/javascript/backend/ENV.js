@@ -13,7 +13,6 @@ module.exports = {
     "/KiWIS/KiWIS?service=kisters&type=queryServices&request=getParameterList&datasource=1&format=objson",
   graph:
     "/KiWIS/KiWIS?service=kisters&type=queryServices&request=getgraph&datasource=1&template=sg_example&format=jpg",
-  hydrodaten_station_host: "https://www.hydrodaten.admin.ch/de/",
   documents_host: "https://data.monitron.ch",
   unit_names: {
     m: "m.ü.Meer",

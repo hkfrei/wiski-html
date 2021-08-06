@@ -270,7 +270,6 @@ const waterUtil = {
       info: {
         ...firstStation,
         stationNumber,
-        station_website_host: env.hydrodaten_station_host,
         kiwis_host: env.kiwis_host,
         graph_url: env.graph,
         diagram_data: env.diagram_data,

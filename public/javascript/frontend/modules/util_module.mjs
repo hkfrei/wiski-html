@@ -165,7 +165,7 @@ const createChart = ({
             font: { size: 10 },
             text: unitNames[timeSerie.ts_unitsymbol]
               ? `[${unitNames[timeSerie.ts_unitsymbol]}]`
-              : `[${timeSerie.stationparameter_name}]`,
+              : `[${timeSerie.ts_unitsymbol}]`,
           },
         },
       },

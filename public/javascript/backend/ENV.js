@@ -21,6 +21,9 @@ module.exports = {
     mm: "Millimeter",
     "°C": "Grad Celsius",
     "%": "Anteil in %",
+    NTU: "Nephelometrischer Trübungswert (NTU)",
+    "l/min": "Liter pro Minute",
+    "µS/cm": "Microsiemens pro Zentimeter",
   },
   ts_group_id: {
     Boden: 47043,

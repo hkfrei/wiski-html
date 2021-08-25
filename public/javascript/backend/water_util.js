@@ -138,6 +138,29 @@ const removeStatisticsFromTimeseries = (timeseries) => {
   });
 };
 
+/*
+ * sorts a timeseries array in a specific order.
+ * @param {array} time_series - the time series objects.
+ * @param {array} sortOrder - the asc parameter sort order (top first).
+ * @returns {array} - ts_copy - a sorted copy of the time_series array from the input parameter.
+ */
+const sortTimeSeries = (time_series, sortOrder) => {
+  const ts_copy = [...time_series];
+  for (var i = sortOrder.length; i >= 0; i--) {
+    const searchterm = sortOrder[i];
+    const searchterm_index = ts_copy.findIndex(
+      (element) => element.stationparameter_name === searchterm
+    );
+    if (searchterm_index !== -1) {
+      //remove the element from the ts_copy...
+      const removedElement = ts_copy.splice(searchterm_index, 1);
+      //...and add the it to the start of the ts_copy
+      ts_copy.splice(0, 0, removedElement[0]);
+    }
+  }
+  return ts_copy;
+};
+
 const waterUtil = {
   getWaterStationInfo: async (stationid) => {
     // basic station information
@@ -177,6 +200,23 @@ const waterUtil = {
       `${env.kiwis_host}${env.time_series_list}&station_id=${stationid}&timeseriesgroup_id=${ts_group_id}`
     );
     let time_series = await timeSeriesResponse.json();
+
+    // sort fliessgewaesser and grundwasser timeseries
+    if (
+      (firstStation.object_type &&
+        firstStation.object_type.toLowerCase().indexOf("grundwasser") !== -1) ||
+      firstStation.object_type.toLowerCase().indexOf("fliessgewässer") !== -1
+    ) {
+      const sortOrder = [
+        "Abfluss",
+        "Pegel",
+        "Wassertemperatur",
+        "pH-Wert",
+        "Elektrische Leitfähigkeit",
+      ];
+      const sorted_time_series = sortTimeSeries(time_series, sortOrder);
+      time_series = sorted_time_series;
+    }
 
     // if it is a boden station, sort the timeseries the right order.
     if (
@@ -259,7 +299,6 @@ const waterUtil = {
         statistics,
         timeseries: time_series,
       });
-      console.log("timeseries", time_series);
     }
 
     // extract the measure parameters (names) for this station

@@ -193,8 +193,9 @@ const waterUtil = {
     } catch (error) {
       docs = error;
     }
-    // get the correct timeseries group for this station
-    const ts_group_id = env.ts_group_id[firstStation.object_type];
+    // get the correct timeseries group for this station.
+    // use 41608 as a fallback. Attention(!) this can potentially cause errors.
+    const ts_group_id = env.ts_group_id[firstStation.object_type] || 41608;
     // get possible diagrams/timeseries this station
     const timeSeriesResponse = await fetch(
       `${env.kiwis_host}${env.time_series_list}&station_id=${stationid}&timeseriesgroup_id=${ts_group_id}`

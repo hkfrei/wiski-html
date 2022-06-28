@@ -37,6 +37,7 @@ app.use(
         "https://*.lisag.ch",
         "https://*.lab.karten-werk.ch",
         "https://geo.ur.ch",
+        "https://*.geo.ur.ch", // necessary for www.geo.ur.ch etc.
       ],
     },
   })

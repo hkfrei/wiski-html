@@ -117,6 +117,23 @@ const getStatisticsFromTimeseries = (timeseries) => {
 };
 
 /*
+ * checks if a timeserie is for statistic purposes.
+ * @param {object} timeserie - timeserie from kiwis service.
+ * @returns {boolean} - true if statistic, false if not.
+ */
+const isStatistic = (timeserie) => {
+  const shortname = timeserie.ts_shortname.toLowerCase();
+  if (
+    shortname.indexOf("max") !== -1 ||
+    shortname.indexOf("min") !== -1 ||
+    shortname.indexOf("mean") !== -1
+  ) {
+    return true;
+  }
+  return false;
+};
+
+/*
  * removes statistical values from an array or timeseries
  * @param {array} timeseries - timeseries/latest measurement objects received from kiwis
  * @returns {array} - timeseries without statistical values.
@@ -126,15 +143,11 @@ const removeStatisticsFromTimeseries = (timeseries) => {
     return [];
   }
   return timeseries.filter((element) => {
-    const shortname = element.ts_shortname.toLowerCase();
-    if (
-      shortname.indexOf("max") !== -1 ||
-      shortname.indexOf("min") !== -1 ||
-      shortname.indexOf("mean") !== -1
-    ) {
+    if (isStatistic(element)) {
       return false;
+    } else {
+      return true;
     }
-    return true;
   });
 };
 
@@ -267,11 +280,14 @@ const waterUtil = {
         `${env.kiwis_host}${env.latest_measurement}&ts_id=${serie.ts_id}`
       );
       const latest_measurement = await latest_measurement_response.json();
-      // if latest measurement is not valid, check for a valid measurement a while back during "env.latest_measurement_period".
+      // if latest measurement is not valid, check for a valid measurement a while back".
       const latest_data = latest_measurement[0].data;
       if (latest_data.length > 0 && latest_data[0][1] === null) {
+        const period = isStatistic(latest_measurement[0])
+          ? env.statistics_period
+          : env.latest_measurement_period;
         const latest_measurements_series_response = await fetch(
-          `${env.kiwis_host}${env.latest_measurement}&ts_id=${serie.ts_id}&period=${env.latest_measurement_period}`
+          `${env.kiwis_host}${env.latest_measurement}&ts_id=${serie.ts_id}&period=${period}`
         );
         const latest_measurement_series = await latest_measurements_series_response.json();
         // get the youngest valid measurement of the "env.latest_measurement_period"

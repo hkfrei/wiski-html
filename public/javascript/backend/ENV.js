@@ -5,6 +5,7 @@ module.exports = {
   latest_measurement:
     "/KiWIS/KiWIS?datasource=1&service=kisters&type=queryServices&request=getTimeseriesValues&metadata=true&md_returnfields=ts_id,station_name,stationparameter_name,station_no,station_id,ts_unitsymbol,parametertype_name,ts_name,ts_shortname&format=dajson&returnfields=Timestamp,Value,Absolute Value",
   latest_measurement_period: "pt24h",
+  statistics_period: "p3y",
   diagram_data:
     "/KiWIS/KiWIS?dateformat=yyyy-MM-dd%27T%27HH%3Amm%3AssXXX&metadata=true&timezone=CET&md_returnfields=station_id%2Cts_id%2Cstation_name%2Cparametertype_name%2Cstationparameter_name%2Cts_unitsymbol&returnfields=Timestamp%2CValue%2CAbsolute Value&id=timeSeriesValues&datasource=1&service=kisters&type=queryServices&request=getTimeseriesValues",
   station_info:

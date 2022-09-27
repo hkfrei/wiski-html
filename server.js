@@ -35,7 +35,7 @@ app.use(
         "'self'",
         "http://*.lisag.ch:3000",
         "https://*.lisag.ch",
-        "https://*.lab.karten-werk.ch",
+        "https://*.karten-werk.ch",
         "https://geo.ur.ch",
         "https://*.geo.ur.ch", // necessary for www.geo.ur.ch etc.
       ],

@@ -20,6 +20,17 @@
           <a href="<%= documents_host%><%= validated %>" target="_blank"><%= pdf_name %></a>
         </div>
   <% }) 
+    }
+    if(docs.yearbookCurrent){ %>
+      <h6 class="documents__title">Provisorische Jahrbücher:</h6>
+    <% docs.yearbookCurrent.forEach(currentYearbook => { 
+        const split = currentYearbook.split("/");
+        const pdf_name = split[split.length - 1] %>
+        <div>
+          <img src="images/file-text.svg" alt="provisorisches jahrbuch" />
+          <a href="<%= documents_host%><%= currentYearbook %>" target="_blank"><%= pdf_name %></a>
+        </div>
+  <% }) 
     } 
     if(docs.yearbookArchive){ %>
       <h6 class="documents__title">Ältere Jahrbücher:</h6>

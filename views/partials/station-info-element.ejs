@@ -3,9 +3,14 @@
   <% if(key === "Messparameter"){ %>
   <div class="infoelement__value">
     <ul class="infoelement__list">
-      <% value.forEach(element =>{%>
-        <li>✔ <%=element %></li>
+      <% if(value.length === 0){ %>
+        <li>Keine Messparameter verfügbar</li>
+      <% } %>
+      <% if(value.length > 0) { %>
+        <% value.forEach(element =>{%>
+            <li>✔ <%=element %></li>
         <%})%>
+      <% } %>
     </ul>
   </div>
   <% } else{ %>

@@ -33,7 +33,7 @@ app.use(
       //allowed iframe users
       frameAncestors: [
         "'self'",
-        "http://*.lisag.ch:3000",
+        "http://*.lisag.ch:*",
         "https://*.lisag.ch",
         "https://*.karten-werk.ch",
         "https://geo.ur.ch",

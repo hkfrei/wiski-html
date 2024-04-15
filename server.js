@@ -43,7 +43,7 @@ app.use(
   })
 );
 app.use(express.static("public"));
-const endpoints = ["/wasser?stationid=21872", "/boden?stationid=22005"];
+const endpoints = ["/wasser?stationid=21872"];
 // index page
 app.get("/", function (req, res) {
   // caching strategy:

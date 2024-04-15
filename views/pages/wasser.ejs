@@ -33,8 +33,10 @@
           aria-labelledby="headingOne"
           data-parent="#accordionExample"
         >
-          <%const messbeginn = new
-          Date(station.station_diary_status.substring(0,10)).toLocaleDateString("de-CH")
+          <%
+          const messbeginn = station.station_diary_status.length > 0 ? 
+          `${new Date(station.station_diary_status.substring(0,10)).toLocaleDateString("de-CH")} | ${station.station_status}`
+          : "Kein Messbeginn bekannt";
           %>
           <div class="card-body card-body-nospace">
             <%-include('../partials/station-status',{online:station.ONLINE_PUBLICATION});%>
@@ -57,8 +59,7 @@
             (LV95)`,value:`${parseInt(station.station_local_x).toLocaleString("de-CH")}
             / ${parseInt(station.station_local_y).toLocaleString("de-CH")}`});
             %>
-            <%-include('../partials/station-info-element',{key:"Messbeginn",value:`${messbeginn}
-            | ${station.station_status}`}); %>
+            <%-include('../partials/station-info-element',{key:"Messbeginn",value:`${messbeginn}`}); %>
             <%-include('../partials/station-link',{key:"Stationswebsite",
             station}); %>
           </div>

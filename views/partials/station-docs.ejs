@@ -50,6 +50,7 @@
     <hr style="margin: 24px 0;"/>
   <% } %>
   <section>
+    <% if(time_series.length > 0){ %>
     <h6 class="document__title" style="margin-bottom: 24px;">Download von Zeitreihen im .xlsx Format:
       <small class="badge badge-warning mt-2">Achtung(!) Daten teilweise nicht validiert.</small>
     </h6>
@@ -86,6 +87,9 @@
         </div>
       </div>
     </form>
+    <% } else{ %>
+    <h6>Es sind keine Messparameter zum Download verfügbar.&nbsp;🤔</h6>
+    <% } %>
     <div>
     </div>
   </section>

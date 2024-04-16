@@ -62,7 +62,9 @@ const downloadTimeSeries = async () => {
     downloadSpinner.style.visibility = "hidden";
   }
 };
-downloadButton.addEventListener("click", downloadTimeSeries);
+if (downloadButton) {
+  downloadButton.addEventListener("click", downloadTimeSeries);
+}
 
 /* send messages to the parent window when the size of the
  * accordion changes

@@ -1,4 +1,3 @@
-var fetch = require("node-fetch");
 var env = require("./ENV.js");
 
 /*
@@ -289,7 +288,8 @@ const waterUtil = {
         const latest_measurements_series_response = await fetch(
           `${env.kiwis_host}${env.latest_measurement}&ts_id=${serie.ts_id}&period=${period}`
         );
-        const latest_measurement_series = await latest_measurements_series_response.json();
+        const latest_measurement_series =
+          await latest_measurements_series_response.json();
         // get the youngest valid measurement of the "env.latest_measurement_period"
         const data = latest_measurement_series[0].data;
         for (let i = data.length - 1; i >= 0; i--) {

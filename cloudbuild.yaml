@@ -1,10 +1,10 @@
 steps:
   # Build the container image
   - name: "gcr.io/cloud-builders/docker"
-    args: ["build", "-t", "gcr.io/geourjs/wiski-hmtl-2", "."]
+    args: ["build", "-t", "gcr.io/geourjs/wiski-hmtl", "."]
   # Push the container image to Container Registry
   - name: "gcr.io/cloud-builders/docker"
-    args: ["push", "gcr.io/geourjs/wiski-hmtl-2"]
+    args: ["push", "gcr.io/geourjs/wiski-hmtl"]
   # Deploy container image to Cloud Run
   - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
     entrypoint: gcloud
@@ -12,9 +12,9 @@ steps:
       [
         "run",
         "deploy",
-        "wiski-html-2",
+        "wiski-html",
         "--image",
-        "gcr.io/geourjs/wiski-hmtl-2",
+        "gcr.io/geourjs/wiski-hmtl",
         "--region",
         "europe-west6",
         "--allow-unauthenticated",
@@ -22,6 +22,6 @@ steps:
         "NODE_ICU_DATA=node_modules/full-icu",
       ]
 images:
-  - gcr.io/geourjs/wiski-hmtl-2
+  - gcr.io/geourjs/wiski-hmtl
 options:
   logging: CLOUD_LOGGING_ONLY

@@ -25,5 +25,3 @@ steps:
       ]
 images:
   - gcr.io/geourjs/wiski-hmtl-2
-options:
-  logging: NONE

@@ -18,12 +18,8 @@ steps:
         "--region",
         "europe-west6",
         "--allow-unauthenticated",
-        "--service-account",
-        "cloud-run-default@geourjs.iam.gserviceaccount.com",
         "--set-env-vars",
         "NODE_ICU_DATA=node_modules/full-icu",
       ]
 images:
   - gcr.io/geourjs/wiski-hmtl-2
-options:
-  logging: CLOUD_LOGGING_ONLY

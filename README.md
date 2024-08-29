@@ -14,6 +14,12 @@ run the app:<br /> `$ npm start` <br />
 
 ### DEPLOY
 
+#### A Continuous Deployment to Google Cloud Run is implemented see https://github.com/hkfrei/cd-google-cloud-run.
+
+The app will be updated on every push to the main branch. The steps below are no more necessary unless you want to deploy manually.
+
+<hr />
+
 make sure, the geourjs project is active:<br />
 
 ```

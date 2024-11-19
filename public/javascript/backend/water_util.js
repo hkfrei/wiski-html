@@ -181,7 +181,10 @@ const sortTimeSeries = (time_series, sortOrder) => {
 const isQuelleOrSondierung = (station_no) => {
   if (station_no.includes("-")) {
     const station_nr = station_no.split("-")[1];
-    const pattern = /^(Q|.*(SB|ES|TW|PB|EB|OG|RB|VS).*)$/;
+    if (station_nr[0] === "Q") {
+      return true;
+    }
+    const pattern = /^(.*(SB|ES|TW|PB|EB|OG|RB|VS).*)$/;
     return pattern.test(station_nr);
   }
   return false;

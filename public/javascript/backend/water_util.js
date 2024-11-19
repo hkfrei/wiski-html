@@ -41,7 +41,7 @@ const getSaugspannungMetadata = (value) => {
   const result = {
     color: "",
     text: "",
-    html: "<span>Keine Daten verfügbar</span>",
+    html: "<span>Keine Daten verfügbar</span>"
   };
   if (!value) {
     return result;
@@ -173,6 +173,20 @@ const sortTimeSeries = (time_series, sortOrder) => {
   return ts_copy;
 };
 
+/*
+ * checks if a station is a Quelle or Sondierung station.
+ * @param {string} station_no - the station number.
+ * @returns {boolean} - true if Quelle or Sondierung, false if not.
+ */
+const isQuelleOrSondierung = (station_no) => {
+  if (station_no.includes("-")) {
+    const station_nr = station_no.split("-")[1];
+    const pattern = /^(Q|.*(SB|ES|TW|PB|EB|OG|RB|VS).*)$/;
+    return pattern.test(station_nr);
+  }
+  return false;
+};
+
 const waterUtil = {
   getWaterStationInfo: async (stationid) => {
     // basic station information
@@ -195,6 +209,10 @@ const waterUtil = {
         }
       }
     }
+
+    // define which accordion should be open by default
+    firstStation.openInfo = isQuelleOrSondierung(firstStation.station_no);
+
     // get external documents for the station
     let docs;
     try {
@@ -225,7 +243,7 @@ const waterUtil = {
         "Pegel",
         "Wassertemperatur",
         "pH-Wert",
-        "Elektrische Leitfähigkeit",
+        "Elektrische Leitfähigkeit"
       ];
       const sorted_time_series = sortTimeSeries(time_series, sortOrder);
       time_series = sorted_time_series;
@@ -314,7 +332,7 @@ const waterUtil = {
       time_series = removeStatisticsFromTimeseries(time_series);
       time_series = addStatisticsToTimeSeries({
         statistics,
-        timeseries: time_series,
+        timeseries: time_series
       });
     }
 
@@ -329,7 +347,7 @@ const waterUtil = {
         kiwis_host: env.kiwis_host,
         graph_url: env.graph,
         diagram_data: env.diagram_data,
-        latest_measurements,
+        latest_measurements
       },
       docs,
       measure_params,
@@ -337,8 +355,8 @@ const waterUtil = {
       unit_names: env.unit_names,
       measure_periods: env.measure_periods,
       service_host: env.service_host,
-      documents_host: env.documents_host,
+      documents_host: env.documents_host
     };
-  },
+  }
 };
 module.exports = waterUtil;

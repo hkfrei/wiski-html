@@ -29,7 +29,7 @@
 
         <div
           id="station-info"
-          class="collapse"
+          class="<%= station.openInfo ? 'collapse show': 'collapse'; %>"
           aria-labelledby="headingOne"
           data-parent="#accordionExample"
         >
@@ -86,7 +86,7 @@
         </div>
         <div
           id="messdaten-aktuell"
-          class="collapse show"
+          class="<%= station.openInfo ? 'collapse': 'collapse show'; %>"
           aria-labelledby="headingTwo"
           data-parent="#accordionExample"
         >

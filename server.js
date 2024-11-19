@@ -18,17 +18,17 @@ app.use(
         "https://cdn.jsdelivr.net",
         "https://cdnjs.cloudflare.com",
         "https://code.jquery.com",
-        "https://unpkg.com",
+        "https://unpkg.com"
       ],
       styleSrc: [
         "'self'",
         "https://stackpath.bootstrapcdn.com",
-        "'unsafe-inline'",
+        "'unsafe-inline'"
       ],
       imgSrc: [
         "'self'",
         "https://kiwis.innetag.ch",
-        "https://data.monitron.ch",
+        "https://data.monitron.ch"
       ],
       //allowed iframe users
       frameAncestors: [
@@ -37,9 +37,9 @@ app.use(
         "https://*.lisag.ch",
         "https://*.karten-werk.ch",
         "https://geo.ur.ch",
-        "https://*.geo.ur.ch", // necessary for www.geo.ur.ch etc.
-      ],
-    },
+        "https://*.geo.ur.ch" // necessary for www.geo.ur.ch etc.
+      ]
+    }
   })
 );
 app.use(express.static("public"));
@@ -52,22 +52,25 @@ app.get("/", function (req, res) {
   // s-maxage:    how long can content be stored on a cdn.
   res.set("Cache-Control", "public, max-age=300, s-maxage=600s");
   res.render("pages/index", {
-    endpoints,
+    endpoints
   });
 });
 
 // wasser page
 app.get("/wasser", async (req, res, next) => {
   res.set("Cache-Control", "public, max-age=300, s-maxage=600s");
-  const { stationid } = req.query;
+  const { stationid, stationgroupid } = req.query;
   if (!stationid) {
     res.render("pages/index", {
-      endpoints,
+      endpoints
     });
     return;
   }
   try {
-    const station = await waterUtil.getWaterStationInfo(stationid);
+    const station = await waterUtil.getWaterStationInfo(
+      stationgroupid || false,
+      stationid
+    );
     res.render("pages/wasser", {
       station: station.info,
       docs: station.docs,
@@ -76,7 +79,7 @@ app.get("/wasser", async (req, res, next) => {
       unit_names: station.unit_names,
       measure_periods: station.measure_periods,
       service_host: station.service_host,
-      documents_host: station.documents_host,
+      documents_host: station.documents_host
     });
     //console.log(station);
   } catch (error) {

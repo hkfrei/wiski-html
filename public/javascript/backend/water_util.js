@@ -173,25 +173,8 @@ const sortTimeSeries = (time_series, sortOrder) => {
   return ts_copy;
 };
 
-/*
- * checks if a station is a Quelle or Sondierung station.
- * @param {string} station_no - the station number.
- * @returns {boolean} - true if Quelle or Sondierung, false if not.
- */
-const isQuelleOrSondierung = (station_no) => {
-  if (station_no.includes("-")) {
-    const station_nr = station_no.split("-")[1];
-    if (station_nr[0] === "Q") {
-      return true;
-    }
-    const pattern = /^(.*(SB|ES|TW|PB|EB|OG|RB|VS).*)$/;
-    return pattern.test(station_nr);
-  }
-  return false;
-};
-
 const waterUtil = {
-  getWaterStationInfo: async (stationid) => {
+  getWaterStationInfo: async (stationGroupId, stationid) => {
     // basic station information
     const stationInfoResponse = await fetch(
       `${env.kiwis_host}${env.station_info}&station_id=${stationid}`
@@ -213,8 +196,8 @@ const waterUtil = {
       }
     }
 
-    // define which accordion should be open by default
-    firstStation.openInfo = isQuelleOrSondierung(firstStation.station_no);
+    // if its a quelle or sondierung (470537), open the station info accordion otherwise the current measure data.
+    firstStation.openInfo = stationGroupId === "470437" ? true : false;
 
     // get external documents for the station
     let docs;

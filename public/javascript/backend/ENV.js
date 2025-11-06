@@ -24,15 +24,15 @@ module.exports = {
     "%": "Anteil in %",
     NTU: "Nephelometrischer Trübungswert (NTU)",
     "l/min": "Liter pro Minute",
-    "µS/cm": "Microsiemens pro Zentimeter",
+    "µS/cm": "Microsiemens pro Zentimeter"
   },
   ts_group_id: {
-    Boden: 47043,
+    Boden: 1009050,
     "Niederschlag - Hydrometrie": 41608,
     "Fliessgewässer - Hydrometrie": 41608,
     "Grundwasser - Hydrometrie": 41608,
     "See - Hydrometrie": 41608,
-    Bohrung: 41608,
+    Bohrung: 41608
   },
   service_host: "https://wiski-html-h2eptfuxza-oa.a.run.app",
   measure_periods: {
@@ -40,6 +40,6 @@ module.exports = {
     pt48h: "48 Std.",
     p7d: "1 Woche",
     p1m: "1 Monat",
-    p1y: "1 Jahr",
-  },
+    p1y: "1 Jahr"
+  }
 };
